@@ -70,7 +70,7 @@ const Login = () => {
       <div></div>
       <div className="flex w-[90%] gap-4 items-center justify-center">
         <div
-          className="w-2/6 h-full rounded-xl 
+          className="w-fit h-full rounded-xl 
         outline outline-1 outline-base-200 flex flex-col px-10 py-12 gap-14 justify-center items-center"
         >
           <div className="flex flex-col items-center justify-center gap-3">
@@ -109,10 +109,12 @@ const Login = () => {
             Sign in
           </button>
         </div>
-        <div className="w-4/6 ">
+
+        <div className="h-full">
           <img
             src={Landing}
             alt="logo alta"
+            className="object-cover"
           />
         </div>
       </div>

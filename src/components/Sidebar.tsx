@@ -8,6 +8,7 @@ import {
   FaSignOutAlt,
 } from 'react-icons/fa';
 import ALTA from '../../public/logo-ALTA-v2@2x 1.png';
+import { NavLink } from 'react-router-dom';
 
 interface Props {
   children?: React.ReactNode;
@@ -39,11 +40,16 @@ const Sidebar: FC<Props> = ({ children }) => {
               />
               <div className="divider my-2 w-full"></div>
 
-              <ul className="menu p-0 gap-1 text-base-200 text-center">
+              <ul className="menu p-0 gap-1 text-base-200 text-center text-lg">
                 <li>
-                  <a>
+                  <NavLink
+                    to={'/'}
+                    className={({ isActive }) =>
+                      isActive ? 'font-medium text-base-100' : ''
+                    }
+                  >
                     <FaHome /> Dashboard
-                  </a>
+                  </NavLink>
                 </li>
                 <li>
                   <a>
@@ -57,19 +63,24 @@ const Sidebar: FC<Props> = ({ children }) => {
                   </a>
                 </li>
                 <li>
-                  <a>
+                  <>
                     <FaUsers />
                     Class
-                  </a>
+                  </>
                 </li>
               </ul>
             </div>
-            <ul className="menu p-0 gap-1 text-base-200 text-center">
+            <ul className="menu p-0 gap-1 text-base-200 text-center text-lg">
               <li>
-                <a>
+                <NavLink
+                  to={'/profile'}
+                  className={({ isActive }) =>
+                    isActive ? 'font-medium text-base-100' : ''
+                  }
+                >
                   <FaUserCircle />
                   Profile
-                </a>
+                </NavLink>
               </li>
               <li>
                 <a>
