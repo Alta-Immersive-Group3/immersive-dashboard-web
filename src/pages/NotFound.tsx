@@ -1,7 +1,14 @@
-import React from 'react';
+import { Section } from '../components/Layout';
 
-const Homepage = () => {
-  return <div>Homepage</div>;
+const NotFound = () => {
+  return (
+    <Section
+      id="not-found"
+      addClass="w-full min-h-screen flex justify-center items-center"
+    >
+      NOT FOUND
+    </Section>
+  );
 };
 
-export default Homepage;
+export default NotFound;

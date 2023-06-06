@@ -29,13 +29,13 @@ const Sidebar: FC<Props> = ({ children }) => {
           htmlFor="my-drawer-2"
           className="drawer-overlay"
         ></label>
-        <div className="w-64 h-full bg-base-100 text-secondary-content p-3">
+        <div className="w-72 h-full bg-base-100 text-secondary-content p-3">
           <div className="w-full h-full rounded-2xl flex flex-col justify-between items-center bg-secondary p-5">
             <div className="w-full flex flex-col items-center pt-3">
               <img
                 src={ALTA}
                 alt=""
-                className="w-[55%]"
+                className="max-w-[55%]"
               />
               <div className="divider my-2 w-full"></div>
 
