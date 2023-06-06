@@ -5,9 +5,19 @@ interface InputProps {
   label?: string;
   name?: string;
   type?: string;
+  defaultVal?: string;
   value?: string | number;
   error?: string | boolean | undefined;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
+}
+
+interface SelectProps {
+  id: string;
+  label?: string;
+  name?: string;
+  value?: string | number;
+  error?: string | boolean | undefined;
+  options?: Array<string>;
   onChangeSelect?: React.ChangeEventHandler<HTMLSelectElement>;
 }
 
@@ -19,6 +29,7 @@ export const Input: FC<InputProps> = ({
   value,
   error,
   onChange,
+  defaultVal,
 }) => {
   return (
     <input
@@ -33,11 +44,11 @@ export const Input: FC<InputProps> = ({
   );
 };
 
-export const Select: FC<InputProps> = ({
+export const Select: FC<SelectProps> = ({
   id,
   label,
   name,
-  type,
+  options,
   value,
   error,
   onChangeSelect,
@@ -49,7 +60,16 @@ export const Select: FC<InputProps> = ({
       name={name}
       value={value}
       onChange={onChangeSelect}
-      placeholder={label}
-    />
+    >
+      <option
+        disabled
+        selected
+      >
+        {label}
+      </option>
+      {options?.map((prop) => {
+        return <option>{prop}</option>;
+      })}
+    </select>
   );
 };
