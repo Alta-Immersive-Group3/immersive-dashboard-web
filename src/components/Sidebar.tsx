@@ -52,9 +52,14 @@ const Sidebar: FC<Props> = ({ children }) => {
                   </NavLink>
                 </li>
                 <li>
-                  <a>
+                  <NavLink
+                    to={'/userlist'}
+                    className={({ isActive }) =>
+                      isActive ? 'font-medium text-base-100' : ''
+                    }
+                  >
                     <FaUserTie /> Users
-                  </a>
+                  </NavLink>
                 </li>
                 <li>
                   <a>
@@ -63,10 +68,10 @@ const Sidebar: FC<Props> = ({ children }) => {
                   </a>
                 </li>
                 <li>
-                  <>
+                  <a>
                     <FaUsers />
                     Class
-                  </>
+                  </a>
                 </li>
               </ul>
             </div>
