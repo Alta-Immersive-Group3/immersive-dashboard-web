@@ -1,8 +1,7 @@
 import React from 'react';
-import { Layout } from '../components/Layout';
 
 const Homepage = () => {
-  return <Layout> snuff </Layout>;
+  return <div>Homepage</div>;
 };
 
 export default Homepage;
