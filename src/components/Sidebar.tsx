@@ -34,7 +34,7 @@ const Sidebar: FC<Props> = ({ children }) => {
             <div className="w-full flex flex-col items-center pt-3">
               <img
                 src={ALTA}
-                alt=""
+                alt="logo-alta"
                 className="max-w-[55%]"
               />
               <div className="divider my-2 w-full"></div>
