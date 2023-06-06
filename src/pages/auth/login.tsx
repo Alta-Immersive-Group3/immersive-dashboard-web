@@ -10,6 +10,7 @@ import Landing from '../../../public/LandingImage.png';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Input } from '../../components/Input';
+import api from '../../utils/api';
 
 const schema = Yup.object({
   email: Yup.string().required('Username harus diisi'),
@@ -32,17 +33,33 @@ const Login = () => {
   });
 
   const onLogin = () => {
-    console.log('email : ', formik.values.email);
-    console.log('password : ', formik.values.password);
     if (formik.values.email !== '' && formik.values.password !== '') {
+      postLogin(formik.values);
       navigate('/');
     } else {
       MySwal.fire({
+        icon: 'warning',
         title: 'Failed',
-        text: 'Please check your username or password!',
-        confirmButtonText: 'OK',
+        text: `error :  please check again`,
+        showCancelButton: false,
       });
     }
+  };
+
+  const postLogin = async (code: any) => {
+    await api
+      .postLogin(code)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        MySwal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: `error :  ${error.message}`,
+          showCancelButton: false,
+        });
+      });
   };
 
   return (
@@ -69,7 +86,7 @@ const Login = () => {
               id="email"
               name="email"
               label="email"
-              type="text"
+              type="email"
               value={formik.values.email}
               onChange={formik.handleChange}
               error={formik.touched.email && formik.errors.email}
