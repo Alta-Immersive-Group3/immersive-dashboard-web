@@ -11,16 +11,12 @@ export default {
       url: `login`,
       data: { code },
     }),
-  getTaskIdx: (code?: string) =>
+  getUsers: (code?: string) =>
     instance({
       method: 'GET',
-      url: `tasks/${code}`,
+      url: `users`,
       headers: {
-        Authorization: `Bearer ${
-          import.meta.env.VITE_TODO_API
-            ? import.meta.env.VITE_TODO_API
-            : process.env.VITE_TODO_API
-        }`,
+        Authorization: `Bearer ${code}`,
       },
     }),
 };

@@ -5,6 +5,7 @@ import NotFound from '../pages/NotFound';
 import Login from '../pages/auth/login';
 import Profile from '../pages/Profile';
 import Homepage from '../pages';
+import Userlist from '../pages/Userlist';
 
 const Router = () => {
   return (
@@ -22,6 +23,10 @@ const Router = () => {
         <Route
           path="/profile"
           element={<Profile />}
+        />
+        <Route
+          path="/userlist"
+          element={<Userlist />}
         />
         <Route
           path="*"
