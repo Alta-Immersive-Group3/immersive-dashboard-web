@@ -14,3 +14,8 @@ export interface addClassType {
   start_date?: string;
   end_date?: string;
 }
+
+export interface PostLogin {
+  email?: string;
+  password?: string;
+}

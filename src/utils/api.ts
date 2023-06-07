@@ -1,15 +1,16 @@
 import axios from 'axios';
+import { PostLogin } from './type';
 
 const instance = axios.create({
-  baseURL: `https://virtserver.swaggerhub.com/iffakhry/alta-dashboard/1.0.0/`,
+  baseURL: `https://immersive-dashboard-api-7sngg27rcq-as.a.run.app/`,
 });
 
 export default {
-  postLogin: (code?: object) =>
+  postLogin: (code?: PostLogin) =>
     instance({
       method: 'POST',
       url: `login`,
-      data: { code },
+      data: code,
     }),
   getUsers: (code?: string) =>
     instance({

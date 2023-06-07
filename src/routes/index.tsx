@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import ScrollToTop from '../components/ScrollToTop';
 import NotFound from '../pages/NotFound';
-import Login from '../pages/auth/login';
+import Login from '../pages/auth/Login';
 import Profile from '../pages/Profile';
 import Homepage from '../pages';
 import Userlist from '../pages/Userlist';

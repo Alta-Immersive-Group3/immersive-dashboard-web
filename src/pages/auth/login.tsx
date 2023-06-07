@@ -1,6 +1,5 @@
 import withReactContent from 'sweetalert2-react-content';
 import swal from 'sweetalert2';
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Section } from '../../components/Layout';
@@ -11,46 +10,49 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Input } from '../../components/Input';
 import api from '../../utils/api';
+import { useCookies } from 'react-cookie';
 
-const schema = Yup.object({
-  email: Yup.string().required('Username harus diisi'),
-  password: Yup.string().required('Password harus diisi'),
+const schema = Yup.object().shape({
+  email: Yup.string().email('please enter a valid email').required('Required'),
+  password: Yup.string().required('Required'),
 });
 
 const Login = () => {
   const MySwal = withReactContent(swal);
   const navigate = useNavigate();
 
-  const formik = useFormik({
-    initialValues: {
-      email: '',
-      password: '',
-    },
-    validationSchema: schema,
-    onSubmit: (values) => {
-      console.log(values);
-    },
-  });
+  const [, setCookie] = useCookies(['id', 'role', 'token']);
 
-  const onLogin = () => {
-    if (formik.values.email !== '' && formik.values.password !== '') {
-      postLogin(formik.values);
-      navigate('/');
-    } else {
-      MySwal.fire({
-        icon: 'warning',
-        title: 'Failed',
-        text: `error :  please check again`,
-        showCancelButton: false,
-      });
-    }
-  };
+  const { values, errors, handleBlur, handleChange, touched, handleSubmit } =
+    useFormik({
+      initialValues: {
+        email: '',
+        password: '',
+      },
+      validationSchema: schema,
+      onSubmit: (values) => {
+        postLogin(values);
+      },
+    });
 
   const postLogin = async (code: any) => {
     await api
       .postLogin(code)
       .then((response) => {
-        console.log(response);
+        const { data, message } = response.data;
+
+        MySwal.fire({
+          title: 'Success',
+          text: message,
+          showCancelButton: false,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            setCookie('id', data.id, { path: '/' });
+            setCookie('role', data.role, { path: '/' });
+            setCookie('token', data.token, { path: '/' });
+            navigate(`/`);
+          }
+        });
       })
       .catch((error) => {
         MySwal.fire({
@@ -69,7 +71,8 @@ const Login = () => {
     >
       <div></div>
       <div className="flex w-[90%] gap-4 items-center justify-center">
-        <div
+        <form
+          onSubmit={handleSubmit}
           className="w-fit h-full rounded-xl 
         outline outline-1 outline-base-200 flex flex-col px-10 py-12 gap-14 justify-center items-center"
         >
@@ -81,34 +84,39 @@ const Login = () => {
               Sign in and start to manage your class!
             </p>
           </div>
-          <div className="flex flex-col gap-5 w-[90%] mt-5">
+          <div className="flex flex-col gap-3 w-[90%] mt-5">
             <Input
               id="email"
               name="email"
               label="email"
               type="email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              error={formik.touched.email && formik.errors.email}
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={errors.email}
+              touch={touched.email}
             />
+
             <Input
               id="password"
               name="password"
               label="password"
               type="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              error={formik.touched.password && formik.errors.password}
+              value={values.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={errors.password}
+              touch={touched.password}
             />
           </div>
           <button
             id="login"
             className="btn btn-secondary w-[90%]"
-            onClick={() => onLogin()}
+            type="submit"
           >
             Sign in
           </button>
-        </div>
+        </form>
 
         <div className="h-full">
           <img
