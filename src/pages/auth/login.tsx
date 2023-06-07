@@ -1,6 +1,5 @@
 import withReactContent from 'sweetalert2-react-content';
 import swal from 'sweetalert2';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Section } from '../../components/Layout';
@@ -11,7 +10,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Input } from '../../components/Input';
 import api from '../../utils/api';
-import { PostLogin } from '../../utils/type';
+import { useCookies } from 'react-cookie';
 
 const schema = Yup.object().shape({
   email: Yup.string().email('please enter a valid email').required('Required'),
@@ -21,6 +20,8 @@ const schema = Yup.object().shape({
 const Login = () => {
   const MySwal = withReactContent(swal);
   const navigate = useNavigate();
+
+  const [, setCookie] = useCookies(['id', 'role', 'token']);
 
   const { values, errors, handleBlur, handleChange, touched, handleSubmit } =
     useFormik({
@@ -38,7 +39,20 @@ const Login = () => {
     await api
       .postLogin(code)
       .then((response) => {
-        console.log(response);
+        const { data, message } = response.data;
+
+        MySwal.fire({
+          title: 'Success',
+          text: message,
+          showCancelButton: false,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            setCookie('id', data.id, { path: '/' });
+            setCookie('role', data.role, { path: '/' });
+            setCookie('token', data.token, { path: '/' });
+            navigate(`/`);
+          }
+        });
       })
       .catch((error) => {
         MySwal.fire({
