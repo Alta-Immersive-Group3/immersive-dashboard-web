@@ -99,7 +99,7 @@ const Userlist = () => {
       <Modals id="modal-edit">
         <div className="flex flex-col gap-5 items-center">
           <p className="text-secondary font-medium tracking-wide text-2xl mb-3">
-            Add User
+            Edit User
           </p>
           <Input
             id="full_name"
@@ -162,7 +162,7 @@ const Userlist = () => {
 
       <Section
         id="section-dashboard"
-        addClass="flex flex-col items-center p-3"
+        addClass="flex flex-col items-center p-3 justify-between"
       >
         <div
           id="header"
@@ -177,7 +177,7 @@ const Userlist = () => {
           <p className="text-secondary tracking-wide text-xl">User Default</p>
         </div>
 
-        <div className="w-full h-[85%] bg-base-300 rounded-xl flex flex-col gap-5 p-8 items-center">
+        <div className="w-full min-h-[83%] bg-base-300 rounded-xl flex flex-col gap-5 p-8 items-center">
           {isAdmin ? (
             <>
               <div className="w-full flex justify-end">

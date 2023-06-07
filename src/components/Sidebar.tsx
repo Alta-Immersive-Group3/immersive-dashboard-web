@@ -89,10 +89,15 @@ const Sidebar: FC<Props> = ({ children }) => {
                   </a>
                 </li>
                 <li>
-                  <a>
+                  <NavLink
+                    to={'/classlist'}
+                    className={({ isActive }) =>
+                      isActive ? 'font-medium text-base-100' : ''
+                    }
+                  >
                     <FaUsers />
                     Class
-                  </a>
+                  </NavLink>
                 </li>
               </ul>
             </div>

@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Classname 1",
+    "pic": "Bennie Gerlach",
+    "date_start": "2023-06-07T08:19:59.606Z",
+    "graduate_date": "2024-04-05T18:48:58.900Z",
+    "user_id": "1"
+  },
+  {
+    "name": "Classname 2",
+    "pic": "Candice Jerde",
+    "date_start": "2023-06-07T22:40:04.196Z",
+    "graduate_date": "2024-01-13T16:51:53.236Z",
+    "user_id": "2"
+  },
+  {
+    "name": "Classname 3",
+    "pic": "Kenneth Herzog",
+    "date_start": "2023-06-08T02:15:08.734Z",
+    "graduate_date": "2023-06-19T08:53:59.126Z",
+    "user_id": "3"
+  },
+  {
+    "name": "Classname 4",
+    "pic": "Miss Samuel Rempel",
+    "date_start": "2023-06-08T00:01:22.755Z",
+    "graduate_date": "2023-10-25T17:34:05.297Z",
+    "user_id": "4"
+  },
+  {
+    "name": "Classname 5",
+    "pic": "Virginia Hane",
+    "date_start": "2023-06-08T04:19:02.440Z",
+    "graduate_date": "2023-08-20T12:09:59.200Z",
+    "user_id": "5"
+  }
+]

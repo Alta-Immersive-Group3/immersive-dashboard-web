@@ -19,8 +19,10 @@ interface SelectProps {
   name?: string;
   value?: string | number;
   error?: string | boolean | undefined;
+  touch?: string | boolean | undefined;
   options?: Array<string>;
   onChangeSelect?: React.ChangeEventHandler<HTMLSelectElement>;
+  onBlur?: React.FocusEventHandler<HTMLSelectElement>;
 }
 
 export const Input: FC<InputProps> = ({
@@ -35,7 +37,7 @@ export const Input: FC<InputProps> = ({
   touch,
 }) => {
   return (
-    <div className="h-16">
+    <div className="h-16 w-full">
       <input
         className={`input w-full bg-base-200 ${
           error && touch ? 'input-error' : ''
@@ -63,24 +65,34 @@ export const Select: FC<SelectProps> = ({
   value,
   error,
   onChangeSelect,
+  onBlur,
+  touch,
 }) => {
   return (
-    <select
-      className="select w-full bg-base-200"
-      id={id}
-      name={name}
-      value={value}
-      onChange={onChangeSelect}
-    >
-      <option
-        disabled
-        selected
+    <div className="h-16 w-full">
+      <select
+        className={`select w-full bg-base-200 ${
+          error && touch ? 'select-error' : ''
+        }`}
+        id={id}
+        name={name}
+        value={value}
+        onChange={onChangeSelect}
+        onBlur={onBlur}
       >
-        {label}
-      </option>
-      {options?.map((prop) => {
-        return <option>{prop}</option>;
-      })}
-    </select>
+        <option
+          disabled
+          selected
+        >
+          {label}
+        </option>
+        {options?.map((prop) => {
+          return <option>{prop}</option>;
+        })}
+      </select>
+      <p>
+        {error && touch && <span className="text-sm text-error">{error}</span>}
+      </p>
+    </div>
   );
 };
