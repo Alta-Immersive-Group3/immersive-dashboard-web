@@ -1,0 +1,45 @@
+{
+  "message": "Success get specific mentee",
+  "data": {
+    "id": 1,
+    "class": "BE 11",
+    "full_name": "M. Yusup",
+    "nick_name": "Yusup",
+    "email": "myusup@gmail.com",
+    "phone": "081234567",
+    "current_address": "jl rumah saya, palembang",
+    "home_address": "jl rumah saya, palembang",
+    "telegram": "@daka",
+    "gender": "L",
+    "education_type": "non-informatics",
+    "major": "akuntansi",
+    "graduate": "2022",
+    "institution": "SMA 1 Palembang",
+    "emergency_name": "bapak ku",
+    "emergency_phone": "08123457",
+    "emergency_status": "orang tua",
+    "feedback": [
+      {
+        "id": 1,
+        "notes": "Ini bagian notes untuk mentee yang bersangkutan: lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem ",
+        "users": "Jerry",
+        "status": "Join",
+        "proof": "https://images.app.goo.gl/t5b981L6oUTU3fE18"
+      },
+      {
+        "id": 1,
+        "notes": "Ini bagian notes untuk mentee yang bersangkutan: lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem ",
+        "users": "Jerry",
+        "status": "Join",
+        "proof": "https://images.app.goo.gl/t5b981L6oUTU3fE18"
+      },
+      {
+        "id": 1,
+        "notes": "Ini bagian notes untuk mentee yang bersangkutan: lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem Ini bagian notes untuk mentee yang bersangkutan: lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem ",
+        "users": "Jerry",
+        "status": "Join",
+        "proof": "https://images.app.goo.gl/t5b981L6oUTU3fE18"
+      }
+    ]
+  }
+}
