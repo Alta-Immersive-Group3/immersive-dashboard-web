@@ -8,13 +8,34 @@ import {
   FaSignOutAlt,
 } from 'react-icons/fa';
 import ALTA from '../../public/logo-ALTA-v2@2x 1.png';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import swal from '../utils/swal';
+import { useCookies } from 'react-cookie';
+import withReactContent from 'sweetalert2-react-content';
 
 interface Props {
   children?: React.ReactNode;
 }
 
 const Sidebar: FC<Props> = ({ children }) => {
+  const [, , removeCookie] = useCookies(['id', 'role', 'token']);
+  const navigate = useNavigate();
+  const MySwal = withReactContent(swal);
+
+  const handleLogout = async () => {
+    MySwal.fire({
+      title: 'Logout',
+      text: 'Are you sure?',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        removeCookie('id');
+        removeCookie('role');
+        removeCookie('token');
+        navigate('/login');
+      }
+    });
+  };
+
   return (
     <div className="drawer sm:drawer-open ">
       <input
@@ -88,7 +109,7 @@ const Sidebar: FC<Props> = ({ children }) => {
                 </NavLink>
               </li>
               <li>
-                <a>
+                <a onClick={() => handleLogout()}>
                   <FaSignOutAlt />
                   Sign Out
                 </a>
