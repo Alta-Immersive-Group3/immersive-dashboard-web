@@ -15,6 +15,26 @@ export interface addClassType {
   end_date?: string;
 }
 
+export interface addMenteeType {
+  full_name?: string;
+  nick_name?: string;
+  email?: string;
+  phone?: number;
+  current_address?: string;
+  home_address?: string;
+  telegram?: string;
+  gender?: string;
+  education_type?: string;
+  major?: string;
+  graduate?: number;
+  institution?: string;
+  emergency_name?: string;
+  emergency_phone?: number;
+  emergency_status?: string;
+  status?: string;
+  class_id?: 1;
+}
+
 export interface PostLogin {
   email?: string;
   password?: string;

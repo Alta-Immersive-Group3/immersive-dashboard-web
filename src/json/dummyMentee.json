@@ -1,0 +1,66 @@
+[
+  {
+    "class": "class 1",
+    "full_name": "Kimberly Rosenbaum",
+    "status": "status 1",
+    "education_type": "education_type 1",
+    "gender": "L",
+    "id": "1"
+  },
+  {
+    "class": "class 2",
+    "full_name": "Miss Emmett Grady",
+    "status": "status 2",
+    "education_type": "education_type 2",
+    "gender": "L",
+    "id": "2"
+  },
+  {
+    "class": "class 3",
+    "full_name": "Janet MacGyver",
+    "status": "status 3",
+    "education_type": "education_type 3",
+    "gender": "L",
+    "id": "3"
+  },
+  {
+    "class": "class 4",
+    "full_name": "Miss Angela Kohler",
+    "status": "status 4",
+    "education_type": "education_type 4",
+    "gender": "L",
+    "id": "4"
+  },
+  {
+    "class": "class 5",
+    "full_name": "Yolanda Sauer",
+    "status": "status 5",
+    "education_type": "education_type 5",
+    "gender": "L",
+    "id": "5"
+  },
+  {
+    "class": "class 6",
+    "full_name": "Larry Shanahan",
+    "status": "status 6",
+    "education_type": "education_type 6",
+    "gender": "L",
+    "id": "6"
+  },
+  {
+    "class": "class 7",
+    "full_name": "Margie Wisoky",
+    "status": "status 7",
+    "education_type": "education_type 7",
+    "gender": "P",
+    "id": "7"
+  },
+  {
+    "class": "class 8",
+    "full_name": "Mrs. Wilfred Jast",
+    "status": "status 8",
+    "education_type": "education_type 8",
+    "gender": "P",
+    "id": "8"
+  }
+]
