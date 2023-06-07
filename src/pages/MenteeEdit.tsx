@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Layout, Section } from '../components/Layout';
-import { Input, Select } from '../components/Input';
-import dummy from '../json/dummyUser.json';
-import { Modals } from '../components/Modals';
-import {
-  FaUserAltSlash,
-  FaUserEdit,
-  FaUserTie,
-  FaUserTimes,
-} from 'react-icons/fa';
+import { Input, Select, TextArea } from '../components/Input';
+
 import { addUserType } from '../utils/type';
+import { useNavigate } from 'react-router-dom';
 
 const MenteeEdit = () => {
   const [handleTime, setHandleTime] = useState<string>('');
   const [isAdmin, setIsAdmin] = useState<boolean>(true);
   const [objModal, setobjModal] = useState<addUserType>();
+  const navigate = useNavigate();
 
   const timeGreeting = () => {
     const currentDate = new Date();
@@ -31,135 +26,12 @@ const MenteeEdit = () => {
     }
   };
 
-  const handleEdit = (props: addUserType) => {
-    setobjModal({
-      email: props.email,
-      full_name: props.full_name,
-      id: props.id,
-      role: props.role,
-      team: props.team,
-    });
-  };
-
   useEffect(() => {
     timeGreeting();
   }, []);
 
   return (
     <Layout>
-      <Modals id="modal-add">
-        <div className="flex flex-col gap-5 items-center">
-          <p className="text-secondary font-medium tracking-wide text-2xl mb-3">
-            Add User
-          </p>
-          <Input
-            id="full_name"
-            name="full_name"
-            label="Full Name"
-            type="text"
-          />
-          <Input
-            id="email"
-            name="email"
-            label="Email"
-            type="email"
-          />
-          <Input
-            id="password"
-            name="password"
-            label="Password"
-            type="password"
-          />
-          <Select
-            id="role"
-            name="role"
-            label="Role"
-            options={['Default', 'Admin']}
-          />
-          <Select
-            id="team"
-            name="team"
-            label="Team"
-            options={['Academic', 'Placement', 'People Skill']}
-          />
-
-          <div className="w-full flex justify-end gap-3">
-            <div className="modal-action mt-0 ">
-              <label
-                htmlFor="modal-add"
-                className="btn btn-ghost"
-              >
-                Close
-              </label>
-            </div>
-            <button className="btn btn-secondary w-32">Submit</button>
-          </div>
-        </div>
-      </Modals>
-      <Modals id="modal-edit">
-        <div className="flex flex-col gap-5 items-center">
-          <p className="text-secondary font-medium tracking-wide text-2xl mb-3">
-            Edit User
-          </p>
-          <Input
-            id="full_name"
-            name="full_name"
-            label="Full Name"
-            value={objModal?.full_name}
-            type="text"
-          />
-          <Input
-            id="email"
-            name="email"
-            label="Email"
-            type="email"
-            value={objModal?.email}
-          />
-          <Select
-            id="role"
-            name="role"
-            label="Role"
-            options={['Default', 'Admin']}
-          />
-          <Select
-            id="team"
-            name="team"
-            label="Team"
-            options={['Academic', 'Placement', 'People Skill']}
-          />
-          <Select
-            id="status"
-            name="status"
-            label="Status"
-            options={['Active']}
-          />
-          <Input
-            id="password"
-            name="password"
-            label="Password"
-            type="password"
-          />
-          <Input
-            id="retype password"
-            name="retype password"
-            label="Retype Password"
-            type="password"
-          />
-
-          <div className="w-full flex justify-end gap-3">
-            <div className="modal-action mt-0 ">
-              <label
-                htmlFor="modal-edit"
-                className="btn btn-ghost"
-              >
-                Close
-              </label>
-            </div>
-            <button className="btn btn-secondary w-32">Submit</button>
-          </div>
-        </div>
-      </Modals>
-
       <Section
         id="section-dashboard"
         addClass="flex flex-col items-center p-3 justify-between"
@@ -178,57 +50,131 @@ const MenteeEdit = () => {
         </div>
 
         <div className="w-full min-h-[83%] bg-base-300 rounded-xl flex flex-col gap-5 p-8 items-center">
-          <div className="w-full flex justify-end">
-            <label
-              htmlFor="modal-add"
-              className="btn btn-secondary w-32"
-            >
-              Add User
-            </label>
-          </div>
-          <div className="overflow-x-auto w-full">
-            <table className="table bg-base-200">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Full Name</th>
-                  <th>Email</th>
-                  <th>Team</th>
-                  <th>Role</th>
-                  <th>Status</th>
-                  <th>Edit</th>
-                  <th>Delete</th>
-                </tr>
-              </thead>
-              <tbody>
-                {dummy.map((prop, idx) => {
-                  return (
-                    <tr>
-                      <th>{idx + 1}</th>
-                      <td>{prop.full_name}</td>
-                      <td>{prop.email}</td>
-                      <td>{prop.team}</td>
-                      <td>{prop.role}</td>
-                      <td>{prop.status}</td>
-                      <td>
-                        <label
-                          onClick={() => handleEdit(prop)}
-                          className="btn p-0 min-h-0 h-0 p text-base"
-                          htmlFor="modal-edit"
-                        >
-                          <FaUserEdit />
-                        </label>
-                      </td>
-                      <td>
-                        <button className="btn p-0 min-h-0 h-0 p text-base">
-                          <FaUserTimes />
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+          <div className="w-full min-h-[83%] bg-base-300 rounded-xl flex items-center p-7 justify-between">
+            <div className="w-[49%] h-full outline outline-1 outline-base-100 flex flex-col justify-center gap-3 rounded-xl p-4">
+              <div className="w-full flex gap-4">
+                <Input
+                  id="full_name"
+                  name="full_name"
+                  label="Full Name"
+                  type="text"
+                />
+                <Input
+                  id="nick_name"
+                  name="nick_name"
+                  label="Nick Name"
+                  type="text"
+                />
+              </div>
+              <Input
+                id="email"
+                name="email"
+                label="Email"
+                type="email"
+              />
+              <TextArea
+                id="current_address"
+                name="current_address"
+                label="Current Address"
+              />
+              <TextArea
+                id="home_address"
+                name="home_address"
+                label="Home Address"
+              />
+              <Select
+                id="gender"
+                name="gender"
+                label="gender"
+                options={['Active']}
+              />
+              <div className="w-full flex gap-4">
+                <Input
+                  id="phone"
+                  name="phone"
+                  label="phone"
+                  type="number"
+                />
+                <Input
+                  id="telegram"
+                  name="telegram"
+                  label="telegram"
+                  type="text"
+                />
+              </div>
+              <div className="w-full flex gap-4">
+                <Input
+                  id="emergency_name"
+                  name="emergency_name"
+                  label="emergency name"
+                  type="text"
+                />
+                <Input
+                  id="emergency_status"
+                  name="emergency_status"
+                  label="emergency status"
+                  type="text"
+                />
+              </div>
+
+              <Input
+                id="emergency_phone"
+                name="emergency_phone"
+                label="emergency phone"
+                type="number"
+              />
+            </div>
+            <div className="w-[49%] h-full outline outline-1 outline-base-100 flex flex-col gap-3 rounded-xl p-4 justify-between">
+              <div className="w-full flex flex-col gap-3">
+                <Select
+                  id="class"
+                  name="class"
+                  label="class"
+                  options={['Active']}
+                />
+                <Select
+                  id="status"
+                  name="status"
+                  label="status"
+                  options={['Active']}
+                />
+                <Select
+                  id="graduation"
+                  name="educate_type"
+                  label="educate type"
+                  options={['Active']}
+                />
+                <Input
+                  id="institute"
+                  name="institute"
+                  label="institute"
+                  type="text"
+                />
+                <Input
+                  id="major"
+                  name="major"
+                  label="major"
+                  type="text"
+                />
+                <Select
+                  id="graduation"
+                  name="graduation"
+                  label="graduation"
+                  options={['Active']}
+                />
+              </div>
+
+              <div className="w-full flex justify-end gap-3">
+                <button
+                  onClick={() => navigate('/mentee/')}
+                  className="btn btn-ghost"
+                >
+                  back
+                </button>
+
+                <button className="btn btn-secondary w-32">Save</button>
+              </div>
+            </div>
           </div>
         </div>
       </Section>
