@@ -35,6 +35,13 @@ export interface addMenteeType {
   class_id?: 1;
 }
 
+export interface addFeedbackType {
+  id?: number;
+  notes?: string;
+  users?: string;
+  status?: string;
+}
+
 export interface PostLogin {
   email?: string;
   password?: string;
