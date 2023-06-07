@@ -29,7 +29,7 @@ const Profile = () => {
     <Layout>
       <Section
         id="section-dashboard"
-        addClass="flex flex-col items-center p-3"
+        addClass="flex flex-col items-center p-3 justify-between"
       >
         <div
           id="header"
@@ -43,7 +43,7 @@ const Profile = () => {
           </div>
           <p className="text-secondary tracking-wide text-xl">User Default</p>
         </div>
-        <div className="w-full h-[85%] bg-base-300 rounded-xl flex items-center p-8 justify-between">
+        <div className="w-full min-h-[83%] bg-base-300 rounded-xl flex items-center p-8 justify-between">
           <div className="w-[49%] h-[480px] outline outline-1 outline-base-100 flex flex-col justify-center gap-5 rounded-xl p-6">
             <p className="text-secondary tracking-wide text-xl font-semibold self-center">
               Your Profile

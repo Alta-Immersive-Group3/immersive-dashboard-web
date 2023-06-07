@@ -2,14 +2,14 @@ import withReactContent from 'sweetalert2-react-content';
 import swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
-import { Section } from '../../components/Layout';
-import ALTA from '../../../public/logo-ALTA@2x 1.png';
-import Landing from '../../../public/LandingImage.png';
+import { Section } from '../components/Layout';
+import ALTA from '../../public/logo-ALTA@2x 1.png';
+import Landing from '../../public/LandingImage.png';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Input } from '../../components/Input';
-import api from '../../utils/api';
+import { Input } from '../components/Input';
+import api from '../utils/api';
 import { useCookies } from 'react-cookie';
 
 const schema = Yup.object().shape({

@@ -2,10 +2,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import ScrollToTop from '../components/ScrollToTop';
 import NotFound from '../pages/NotFound';
-import Login from '../pages/auth/Login';
+import Login from '../pages/Login';
 import Profile from '../pages/Profile';
 import Homepage from '../pages';
 import Userlist from '../pages/Userlist';
+import Classlist from '../pages/Classlist';
 
 const Router = () => {
   return (
@@ -27,6 +28,10 @@ const Router = () => {
         <Route
           path="/userlist"
           element={<Userlist />}
+        />
+        <Route
+          path="/classlist"
+          element={<Classlist />}
         />
         <Route
           path="*"
