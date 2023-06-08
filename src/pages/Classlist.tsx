@@ -2,9 +2,9 @@ import withReactContent from 'sweetalert2-react-content';
 import swal from '../utils/swal';
 import toast from '../utils/toast';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Layout, Section } from '../components/Layout';
-import { Input, Select } from '../components/Input';
+import { Input } from '../components/Input';
 import { Modals } from '../components/Modals';
 import { FaUsersCog, FaUsersSlash } from 'react-icons/fa';
 import { addClassType } from '../utils/type';
@@ -12,7 +12,6 @@ import { addClassType } from '../utils/type';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useCookies } from 'react-cookie';
-import apiSwag from '../utils/apiSwag';
 import api from '../utils/api';
 
 const addSchema = Yup.object().shape({

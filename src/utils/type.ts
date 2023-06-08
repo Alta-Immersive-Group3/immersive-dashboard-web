@@ -39,10 +39,11 @@ export interface addMenteeType {
 }
 
 export interface addFeedbackType {
-  id?: number;
   notes?: string;
-  users?: string;
-  status?: string;
+  id_user?: number;
+  id_mentee?: number;
+  id_status?: number;
+  proof?: string;
 }
 
 export interface PostLogin {

@@ -2,12 +2,12 @@ import withReactContent from 'sweetalert2-react-content';
 import swal from '../utils/swal';
 import toast from '../utils/toast';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Layout, Section } from '../components/Layout';
 import { Input, Select } from '../components/Input';
 import { Modals } from '../components/Modals';
 import { FaUserEdit, FaUserTimes } from 'react-icons/fa';
-import { addUserType, usersType } from '../utils/type';
+import { addUserType } from '../utils/type';
 import { useCookies } from 'react-cookie';
 import api from '../utils/api';
 
@@ -26,14 +26,12 @@ const Userlist = () => {
   const [handleTime, setHandleTime] = useState<string>('');
   const [idModalEdit, setidModalEdit] = useState<number>();
   const [dataUsers, setDataUsers] = useState<addUserType[]>([]);
-  const [addObject, setAddObject] = useState<addUserType>();
 
   const MySwal = withReactContent(swal);
   const MyToast = withReactContent(toast);
 
   const [cookie] = useCookies(['id', 'role', 'token', 'full_name']);
   const ckToken = cookie.token;
-  const ckId = cookie.id;
   const ckRole = cookie.role;
   const ckName = cookie.full_name;
 

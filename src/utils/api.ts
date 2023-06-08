@@ -165,4 +165,12 @@ export default {
         Authorization: `Bearer ${token}`,
       },
     }),
+  getFeedbackById: (token?: string, data?: any) =>
+    instance({
+      method: 'GET',
+      url: `mentees/${data}/feedback`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
 };
