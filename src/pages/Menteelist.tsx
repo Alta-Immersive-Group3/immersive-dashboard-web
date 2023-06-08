@@ -2,18 +2,11 @@ import withReactContent from 'sweetalert2-react-content';
 import swal from '../utils/swal';
 import toast from '../utils/toast';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Layout, Section } from '../components/Layout';
-import { Input, Select } from '../components/Input';
 import { data } from '../json/dataStatus.json';
-import { Modals } from '../components/Modals';
-import {
-  FaUserAltSlash,
-  FaUserEdit,
-  FaUserTag,
-  FaUserTie,
-  FaUserTimes,
-} from 'react-icons/fa';
+
+import { FaUserEdit, FaUserTag, FaUserTimes } from 'react-icons/fa';
 import { addClassType, menteesType } from '../utils/type';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
@@ -21,7 +14,6 @@ import api from '../utils/api';
 
 const Menteelist = () => {
   const [handleTime, setHandleTime] = useState<string>('');
-  const [load, setLoad] = useState<boolean>(true);
   const [objModal, setobjModal] = useState<menteesType[]>([]);
   const [objClass, setObjClass] = useState<addClassType[]>([]);
 
@@ -31,7 +23,6 @@ const Menteelist = () => {
 
   const [cookie] = useCookies(['id', 'role', 'token', 'full_name']);
   const ckToken = cookie.token;
-  const ckId = cookie.id;
   const ckRole = cookie.role;
   const ckName = cookie.full_name;
 
@@ -69,8 +60,7 @@ const Menteelist = () => {
           text: `error :  ${error.message}`,
           showCancelButton: false,
         });
-      })
-      .finally(() => setLoad(false));
+      });
   };
 
   const fetchGetAllMentee = async () => {

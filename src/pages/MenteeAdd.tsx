@@ -130,7 +130,6 @@ const MenteeAdd = () => {
     validationSchema: addSchema,
     onSubmit: (values) => {
       addMentee(values);
-      console.log(values);
     },
   });
 

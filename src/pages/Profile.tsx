@@ -2,10 +2,9 @@ import withReactContent from 'sweetalert2-react-content';
 import swal from '../utils/swal';
 import toast from '../utils/toast';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Layout, Section } from '../components/Layout';
 import { Input } from '../components/Input';
-import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import api from '../utils/api';
 

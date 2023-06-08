@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import withReactContent from 'sweetalert2-react-content';
 import swal from '../utils/swal';
 import { Layout, Section } from '../components/Layout';

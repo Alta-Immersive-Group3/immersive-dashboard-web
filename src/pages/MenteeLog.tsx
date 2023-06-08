@@ -3,25 +3,12 @@ import swal from '../utils/swal';
 import toast from '../utils/toast';
 import { data } from '../json/dataStatus.json';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Layout, Section } from '../components/Layout';
 import { Input, Select, TextArea } from '../components/Input';
 import { data as dataStatus } from '../json/dataStatus.json';
-
-import dummy from '../json/dummyLog.json';
 import { Modals } from '../components/Modals';
-import {
-  FaUserAltSlash,
-  FaUserEdit,
-  FaUserTie,
-  FaUserTimes,
-} from 'react-icons/fa';
-import {
-  addClassType,
-  addFeedbackType,
-  addUserType,
-  menteesType,
-} from '../utils/type';
+import { addClassType, addFeedbackType, menteesType } from '../utils/type';
 import { useCookies } from 'react-cookie';
 import { useParams } from 'react-router-dom';
 import api from '../utils/api';
@@ -39,8 +26,6 @@ const addSchema = Yup.object().shape({
 
 const MenteeLog = () => {
   const [handleTime, setHandleTime] = useState<string>('');
-  const [isAdmin, setIsAdmin] = useState<boolean>(true);
-  const [objModal, setobjModal] = useState<addUserType>();
   const [objLog, setObjLog] = useState<menteesType>();
   const [objClass, setObjClass] = useState<addClassType[]>([]);
   const [objFeedback, setObjFeedback] = useState<addFeedbackType[]>([]);
