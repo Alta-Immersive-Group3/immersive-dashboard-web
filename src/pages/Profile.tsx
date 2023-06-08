@@ -1,5 +1,6 @@
 import withReactContent from 'sweetalert2-react-content';
-import swal from 'sweetalert2';
+import swal from '../utils/swal';
+import toast from '../utils/toast';
 
 import React, { useEffect, useState } from 'react';
 import { Layout, Section } from '../components/Layout';
@@ -12,7 +13,6 @@ import { addUserType } from '../utils/type';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import toast from '../utils/toast';
 
 const schema = Yup.object().shape({
   full_name: Yup.string().required('Required'),
@@ -30,7 +30,6 @@ const Profile = () => {
 
   const MySwal = withReactContent(swal);
   const MyToast = withReactContent(toast);
-  const navigate = useNavigate();
 
   const [cookie, setCookie] = useCookies(['id', 'role', 'token', 'full_name']);
   const ckToken = cookie.token;

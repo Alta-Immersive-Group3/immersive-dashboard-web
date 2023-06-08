@@ -5,6 +5,9 @@ export interface addUserType {
   role?: string;
   team?: string;
   status?: string;
+  password?: string;
+  id_team?: number;
+  name?: string;
 }
 
 export interface addClassType {
@@ -49,4 +52,13 @@ export interface PostLogin {
 export interface putUser extends PostLogin {
   full_name?: string;
   confirmPassword?: string;
+}
+
+export interface usersType {
+  id?: number;
+  name?: string;
+  email?: string;
+  role?: string;
+  id_team?: number;
+  status?: boolean;
 }

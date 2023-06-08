@@ -29,4 +29,38 @@ export default {
         Authorization: `Bearer ${token}`,
       },
     }),
+  getUserAll: (token?: string) =>
+    instance({
+      method: 'GET',
+      url: `users`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  postAddUser: (token?: string, data?: any) =>
+    instance({
+      method: 'POST',
+      url: `users`,
+      data: data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  delUserById: (token?: string, usid?: any) =>
+    instance({
+      method: 'DELETE',
+      url: `users/${usid}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  editUsersById: (token?: string, usid?: string, data?: putUser) =>
+    instance({
+      method: 'PUT',
+      url: `users/${usid}`,
+      data: data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
 };

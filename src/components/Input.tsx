@@ -10,6 +10,12 @@ interface FormikProps {
   touch?: string | boolean | undefined;
 }
 
+interface SelectProps extends FormikProps {
+  onChangeSelect?: React.ChangeEventHandler<HTMLSelectElement>;
+  onBlur?: React.FocusEventHandler<HTMLSelectElement>;
+  children: React.ReactNode;
+}
+
 interface InputProps extends FormikProps {
   type?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
@@ -18,12 +24,6 @@ interface InputProps extends FormikProps {
 interface TextAreaProps extends FormikProps {
   onChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
   onBlur?: React.FocusEventHandler<HTMLTextAreaElement>;
-}
-
-interface SelectProps extends FormikProps {
-  options?: Array<string>;
-  onChangeSelect?: React.ChangeEventHandler<HTMLSelectElement>;
-  onBlur?: React.FocusEventHandler<HTMLSelectElement>;
 }
 
 export const Input: FC<InputProps> = ({
@@ -94,12 +94,12 @@ export const Select: FC<SelectProps> = ({
   id,
   label,
   name,
-  options,
   value,
   error,
   onChangeSelect,
   onBlur,
   touch,
+  children,
 }) => {
   return (
     <div className="h-16 w-full">
@@ -119,9 +119,7 @@ export const Select: FC<SelectProps> = ({
         >
           {label}
         </option>
-        {options?.map((prop) => {
-          return <option>{prop}</option>;
-        })}
+        {children}
       </select>
       <p>
         {error && touch && <span className="text-sm text-error">{error}</span>}
