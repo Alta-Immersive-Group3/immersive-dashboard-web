@@ -62,3 +62,24 @@ export interface usersType {
   id_team?: number;
   status?: boolean;
 }
+
+export interface menteesType {
+  id?: number;
+  id_class?: number;
+  full_name?: string;
+  nick_name?: string;
+  email?: string;
+  phone?: string;
+  current_address?: string;
+  home_address?: string;
+  telegram?: string;
+  id_status?: number;
+  gender?: string;
+  education_type?: string;
+  major?: string;
+  graduate?: number;
+  institution?: string;
+  emergency_name?: string;
+  emergency_phone?: string;
+  emergency_status?: string;
+}

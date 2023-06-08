@@ -5,7 +5,6 @@ import toast from '../utils/toast';
 import React, { useEffect, useState } from 'react';
 import { Layout, Section } from '../components/Layout';
 import { Input, Select } from '../components/Input';
-import dummy from '../json/dummyUser.json';
 import { Modals } from '../components/Modals';
 import { FaUserEdit, FaUserTimes } from 'react-icons/fa';
 import { addUserType, usersType } from '../utils/type';

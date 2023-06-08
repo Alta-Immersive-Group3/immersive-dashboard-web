@@ -108,4 +108,61 @@ export default {
         Authorization: `Bearer ${token}`,
       },
     }),
+
+  // Menteee //
+
+  getMenteeAll: (token?: string) =>
+    instance({
+      method: 'GET',
+      url: `mentees`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  postAddMentee: (token?: string, data?: any) =>
+    instance({
+      method: 'POST',
+      url: `mentees`,
+      data: data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  getMenteeById: (token?: string, cid?: string) =>
+    instance({
+      method: 'GET',
+      url: `mentees/${cid}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  editMenteeById: (token?: string, usid?: string, data?: any) =>
+    instance({
+      method: 'PUT',
+      url: `mentees/${usid}`,
+      data: data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  delMenteeById: (token?: string, usid?: any) =>
+    instance({
+      method: 'DELETE',
+      url: `mentees/${usid}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  //Feedback
+
+  postFeedback: (token?: string, data?: any) =>
+    instance({
+      method: 'POST',
+      url: `feedbacks`,
+      data: data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
 };

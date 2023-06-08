@@ -1,3 +1,8 @@
+import withReactContent from 'sweetalert2-react-content';
+import swal from '../utils/swal';
+import toast from '../utils/toast';
+import { data } from '../json/dataStatus.json';
+
 import React, { useEffect, useState } from 'react';
 import { Layout, Section } from '../components/Layout';
 import { Input, Select, TextArea } from '../components/Input';
@@ -10,11 +15,21 @@ import {
   FaUserTimes,
 } from 'react-icons/fa';
 import { addUserType } from '../utils/type';
+import { useCookies } from 'react-cookie';
 
 const MenteeLog = () => {
   const [handleTime, setHandleTime] = useState<string>('');
   const [isAdmin, setIsAdmin] = useState<boolean>(true);
   const [objModal, setobjModal] = useState<addUserType>();
+
+  const MySwal = withReactContent(swal);
+  const MyToast = withReactContent(toast);
+
+  const [cookie] = useCookies(['id', 'role', 'token', 'full_name']);
+  const ckToken = cookie.token;
+  const ckId = cookie.id;
+  const ckRole = cookie.role;
+  const ckName = cookie.full_name;
 
   const timeGreeting = () => {
     const currentDate = new Date();
@@ -52,12 +67,7 @@ const MenteeLog = () => {
           <p className="text-secondary font-medium tracking-wide text-2xl mb-3">
             Add Log
           </p>
-          <Select
-            id="status"
-            name="status"
-            label="status"
-            options={['Academic', 'Placement', 'People Skill']}
-          />
+
           <TextArea
             id="notes"
             name="notes"
@@ -88,11 +98,11 @@ const MenteeLog = () => {
         >
           <div className="flex flex-col gap-3">
             <p className="text-secondary tracking-wide font-semibold text-3xl">
-              {handleTime} Jhon Doe!
+              {handleTime} {ckName}!
             </p>
-            <p className="text-secondary tracking-wide text-xl">MenteeLog</p>
+            <p className="text-secondary tracking-wide text-xl">Mentee Log</p>
           </div>
-          <p className="text-secondary tracking-wide text-xl">User Default</p>
+          <p className="text-secondary tracking-wide text-xl">User {ckRole}</p>
         </div>
 
         <div className="w-full min-h-[83%] bg-base-300 rounded-xl flex flex-col gap-5 p-6 ">

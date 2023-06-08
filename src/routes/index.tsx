@@ -10,6 +10,7 @@ import Classlist from '../pages/Classlist';
 import Menteelist from '../pages/Menteelist';
 import MenteeLog from '../pages/MenteeLog';
 import MenteeEdit from '../pages/MenteeEdit';
+import MenteeAdd from '../pages/MenteeAdd';
 
 const Router = () => {
   return (
@@ -39,6 +40,10 @@ const Router = () => {
         <Route
           path="/mentee"
           element={<Menteelist />}
+        />
+        <Route
+          path="/mentee/add"
+          element={<MenteeAdd />}
         />
         <Route
           path="/mentee/:mentee_id/edit"

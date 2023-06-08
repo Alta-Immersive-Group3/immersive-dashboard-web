@@ -5,7 +5,7 @@ import toast from '../utils/toast';
 import React, { useEffect, useState } from 'react';
 import { Layout, Section } from '../components/Layout';
 import { Input, Select } from '../components/Input';
-import dummy from '../json/dummyMentee.json';
+import { data } from '../json/dataStatus.json';
 import { Modals } from '../components/Modals';
 import {
   FaUserAltSlash,
@@ -14,13 +14,16 @@ import {
   FaUserTie,
   FaUserTimes,
 } from 'react-icons/fa';
-import { addUserType } from '../utils/type';
+import { addClassType, menteesType } from '../utils/type';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import api from '../utils/api';
 
 const Menteelist = () => {
   const [handleTime, setHandleTime] = useState<string>('');
-  const [isAdmin, setIsAdmin] = useState<boolean>(true);
+  const [load, setLoad] = useState<boolean>(true);
+  const [objModal, setobjModal] = useState<menteesType[]>([]);
+  const [objClass, setObjClass] = useState<addClassType[]>([]);
 
   const navigate = useNavigate();
   const MySwal = withReactContent(swal);
@@ -47,8 +50,93 @@ const Menteelist = () => {
     }
   };
 
-  useEffect(() => {
+  const getDataName = (id?: number): string | undefined => {
+    const dataItem = data.find((item) => item.id === id);
+    return dataItem?.name;
+  };
+
+  const fetchGetAllClass = async () => {
+    await api
+      .getClassAll(ckToken)
+      .then((response) => {
+        const { data } = response.data;
+        setObjClass(data);
+      })
+      .catch((error) => {
+        MySwal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: `error :  ${error.message}`,
+          showCancelButton: false,
+        });
+      })
+      .finally(() => setLoad(false));
+  };
+
+  const fetchGetAllMentee = async () => {
+    await api
+      .getMenteeAll(ckToken)
+      .then((response) => {
+        const { data } = response.data;
+        setobjModal(data);
+      })
+      .catch((error) => {
+        MySwal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: `error :  ${error.message}`,
+          showCancelButton: false,
+        });
+      });
+  };
+
+  const delMentee = async (usid?: any) => {
+    await api
+      .delMenteeById(ckToken, usid)
+      .then((response) => {
+        const { message } = response.data;
+        fetchGetAllMentee();
+        MyToast.fire({
+          icon: 'success',
+          title: message,
+        });
+      })
+      .catch((error) => {
+        MySwal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: `error :  ${error.message}`,
+          showCancelButton: false,
+        });
+      });
+  };
+
+  const handleDelMentee = async (usid?: any) => {
+    MySwal.fire({
+      icon: 'question',
+      title: 'DELETE',
+      text: `are you sure delete ?`,
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        delMentee(usid);
+      }
+    });
+  };
+
+  const getClassName = (id_class?: number) => {
+    const dataItem = objClass.find((item) => item.id === id_class);
+    return dataItem?.name;
+  };
+
+  const dedicatedFetch = async () => {
     timeGreeting();
+    await fetchGetAllMentee();
+    await fetchGetAllClass();
+  };
+
+  useEffect(() => {
+    dedicatedFetch();
   }, []);
 
   return (
@@ -72,12 +160,12 @@ const Menteelist = () => {
 
         <div className="w-full min-h-[83%] bg-base-300 rounded-xl flex flex-col gap-5 p-8 items-center">
           <div className="w-full flex justify-end">
-            <label
-              htmlFor="modal-add"
+            <button
+              onClick={() => navigate('/mentee/add')}
               className="btn btn-secondary w-32"
             >
               Add Mentee
-            </label>
+            </button>
           </div>
           <div className="overflow-x-auto w-full">
             <table className="table bg-base-200">
@@ -95,13 +183,13 @@ const Menteelist = () => {
                 </tr>
               </thead>
               <tbody>
-                {dummy.map((prop, idx) => {
+                {objModal.map((prop, idx) => {
                   return (
-                    <tr>
+                    <tr key={idx}>
                       <th>{idx + 1}</th>
                       <td>{prop.full_name}</td>
-                      <td>{prop.class}</td>
-                      <td>{prop.status}</td>
+                      <td>{getClassName(prop.id_class)}</td>
+                      <td>{getDataName(prop.id_status)}</td>
                       <td>{prop.education_type}</td>
                       <td>{prop.gender === 'L' ? 'Male' : 'Female'}</td>
                       <td>
@@ -121,7 +209,10 @@ const Menteelist = () => {
                         </button>
                       </td>
                       <td>
-                        <button className="btn p-0 min-h-0 h-0 p text-base">
+                        <button
+                          onClick={() => handleDelMentee(prop.id)}
+                          className="btn p-0 min-h-0 h-0 p text-base"
+                        >
                           <FaUserTimes />
                         </button>
                       </td>
