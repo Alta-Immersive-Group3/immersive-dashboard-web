@@ -39,7 +39,7 @@ export const Input: FC<InputProps> = ({
   return (
     <div className="h-16 w-full">
       <input
-        className={`input w-full bg-base-200 capitalize ${
+        className={`input w-full bg-base-200 ${
           error && touch ? 'input-error' : ''
         }`}
         id={id}
@@ -70,7 +70,7 @@ export const TextArea: FC<TextAreaProps> = ({
   return (
     <div className="h-[90px] w-full">
       <textarea
-        className={`textarea w-full bg-base-200 capitalize  ${
+        className={`textarea w-full bg-base-200  ${
           error && touch ? 'textarea-error-error' : ''
         }`}
         id={id}
@@ -101,7 +101,7 @@ export const Select: FC<SelectProps> = ({
   return (
     <div className="h-16 w-full">
       <select
-        className={`select w-full bg-base-200 capitalize ${
+        className={`select w-full bg-base-200 ${
           error && touch ? 'select-error' : ''
         }`}
         id={id}

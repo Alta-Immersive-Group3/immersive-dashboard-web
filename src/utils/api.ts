@@ -12,12 +12,12 @@ export default {
       url: `login`,
       data: code,
     }),
-  getUsers: (code?: string) =>
+  getUserById: (token?: string, usid?: string) =>
     instance({
       method: 'GET',
-      url: `users`,
+      url: `users/${usid}`,
       headers: {
-        Authorization: `Bearer ${code}`,
+        Authorization: `Bearer ${token}`,
       },
     }),
 };
