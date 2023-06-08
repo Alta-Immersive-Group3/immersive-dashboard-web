@@ -2,7 +2,7 @@ import withReactContent from 'sweetalert2-react-content';
 import swal from '../utils/swal';
 import toast from '../utils/toast';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Layout, Section } from '../components/Layout';
 import { Input, Select, TextArea } from '../components/Input';
 import { data } from '../json/dataStatus.json';
@@ -37,8 +37,6 @@ const addSchema = Yup.object().shape({
 
 const MenteeAdd = () => {
   const [handleTime, setHandleTime] = useState<string>('');
-  const [isAdmin, setIsAdmin] = useState<boolean>(true);
-  const [objModal, setobjModal] = useState<addUserType>();
   const [objClass, setObjClass] = useState<addClassType[]>([]);
   const navigate = useNavigate();
 
@@ -62,7 +60,6 @@ const MenteeAdd = () => {
 
   const [cookie] = useCookies(['id', 'role', 'token', 'full_name']);
   const ckToken = cookie.token;
-  const ckId = cookie.id;
   const ckRole = cookie.role;
   const ckName = cookie.full_name;
 
