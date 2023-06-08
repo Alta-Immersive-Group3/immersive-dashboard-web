@@ -1,3 +1,7 @@
+import withReactContent from 'sweetalert2-react-content';
+import swal from '../utils/swal';
+import toast from '../utils/toast';
+
 import React, { useEffect, useState } from 'react';
 import { Layout, Section } from '../components/Layout';
 import { Input, Select } from '../components/Input';
@@ -12,12 +16,21 @@ import {
 } from 'react-icons/fa';
 import { addUserType } from '../utils/type';
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 const Menteelist = () => {
   const [handleTime, setHandleTime] = useState<string>('');
   const [isAdmin, setIsAdmin] = useState<boolean>(true);
 
   const navigate = useNavigate();
+  const MySwal = withReactContent(swal);
+  const MyToast = withReactContent(toast);
+
+  const [cookie] = useCookies(['id', 'role', 'token', 'full_name']);
+  const ckToken = cookie.token;
+  const ckId = cookie.id;
+  const ckRole = cookie.role;
+  const ckName = cookie.full_name;
 
   const timeGreeting = () => {
     const currentDate = new Date();
@@ -40,61 +53,6 @@ const Menteelist = () => {
 
   return (
     <Layout>
-      <Modals id="modal-add">
-        <div className="flex flex-col gap-5 items-center">
-          <p className="text-secondary font-medium tracking-wide text-2xl mb-3">
-            Add Mentee
-          </p>
-          <Input
-            id="full_name"
-            name="full_name"
-            label="Full Name"
-            type="text"
-          />
-          <Input
-            id="email"
-            name="email"
-            label="Email"
-            type="email"
-          />
-          <Input
-            id="phone"
-            name="phone"
-            label="Phone initiate with 0"
-            type="number"
-          />
-          <Select
-            id="class"
-            name="class"
-            label="Class"
-            options={['Class', 'Class']}
-          />
-          <Select
-            id="category"
-            name="category"
-            label="Category"
-            options={['category', 'category']}
-          />
-          <Select
-            id="gender"
-            name="gender"
-            label="Gender"
-            options={['L', 'M']}
-          />
-
-          <div className="w-full flex justify-end gap-3">
-            <div className="modal-action mt-0 ">
-              <label
-                htmlFor="modal-add"
-                className="btn btn-ghost"
-              >
-                Close
-              </label>
-            </div>
-            <button className="btn btn-secondary w-32">Submit</button>
-          </div>
-        </div>
-      </Modals>
       <Section
         id="section-dashboard"
         addClass="flex flex-col items-center p-3 justify-between"
@@ -105,11 +63,11 @@ const Menteelist = () => {
         >
           <div className="flex flex-col gap-3">
             <p className="text-secondary tracking-wide font-semibold text-3xl">
-              {handleTime} Jhon Doe!
+              {handleTime} {ckName}!
             </p>
             <p className="text-secondary tracking-wide text-xl">Menteelist</p>
           </div>
-          <p className="text-secondary tracking-wide text-xl">User Default</p>
+          <p className="text-secondary tracking-wide text-xl">User {ckRole}</p>
         </div>
 
         <div className="w-full min-h-[83%] bg-base-300 rounded-xl flex flex-col gap-5 p-8 items-center">
