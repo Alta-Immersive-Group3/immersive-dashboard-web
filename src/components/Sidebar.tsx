@@ -18,7 +18,7 @@ interface Props {
 }
 
 const Sidebar: FC<Props> = ({ children }) => {
-  const [, , removeCookie] = useCookies(['id', 'role', 'token']);
+  const [, , removeCookie] = useCookies(['id', 'role', 'token', 'full_name']);
   const navigate = useNavigate();
   const MySwal = withReactContent(swal);
 
@@ -31,6 +31,7 @@ const Sidebar: FC<Props> = ({ children }) => {
         removeCookie('id');
         removeCookie('role');
         removeCookie('token');
+        removeCookie('full_name');
         navigate('/login');
       }
     });
