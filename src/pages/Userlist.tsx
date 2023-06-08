@@ -91,6 +91,7 @@ const Userlist = () => {
       .then((response) => {
         const { data } = response.data;
         setDataUsers(data);
+        console.log(dataUsers);
       })
       .catch((error) => {
         MySwal.fire({
@@ -125,12 +126,16 @@ const Userlist = () => {
       });
   };
 
-  const delUser = async (usid?: string) => {
+  const delUser = async (usid?: any) => {
     await api
       .delUserById(ckToken, usid)
       .then((response) => {
-        const { data } = response.data;
-        setDataUsers(data);
+        const { message } = response.data;
+        fetchGetAll();
+        MyToast.fire({
+          icon: 'success',
+          title: message,
+        });
       })
       .catch((error) => {
         MySwal.fire({
@@ -140,6 +145,19 @@ const Userlist = () => {
           showCancelButton: false,
         });
       });
+  };
+
+  const handleDelUser = async (usid?: any) => {
+    MySwal.fire({
+      icon: 'question',
+      title: 'DELETE',
+      text: `are you sure delete ?`,
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        delUser(usid);
+      }
+    });
   };
 
   const formikAdd = useFormik({
@@ -372,7 +390,10 @@ const Userlist = () => {
                             </label> */}
                           </td>
                           <td>
-                            <button className="btn p-0 min-h-0 h-0 p text-base">
+                            <button
+                              onClick={() => handleDelUser(prop.id)}
+                              className="btn p-0 min-h-0 h-0 p text-base"
+                            >
                               <FaUserTimes />
                             </button>
                           </td>

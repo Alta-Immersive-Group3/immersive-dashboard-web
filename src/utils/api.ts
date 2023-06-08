@@ -46,7 +46,7 @@ export default {
         Authorization: `Bearer ${token}`,
       },
     }),
-  delUserById: (token?: string, usid?: string) =>
+  delUserById: (token?: string, usid?: any) =>
     instance({
       method: 'DELETE',
       url: `users/${usid}`,
