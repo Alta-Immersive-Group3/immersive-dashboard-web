@@ -11,11 +11,11 @@ export interface addUserType {
 }
 
 export interface addClassType {
-  id_class?: number;
-  class_name?: string;
-  PIC?: string;
+  id?: number;
+  name?: string;
+  pic?: number;
   start_date?: string;
-  end_date?: string;
+  graduate_date?: string;
 }
 
 export interface addMenteeType {
