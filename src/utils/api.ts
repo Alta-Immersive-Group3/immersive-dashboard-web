@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { PostLogin } from './type';
+import { PostLogin, putUser } from './type';
 
 const instance = axios.create({
   baseURL: `https://immersive-dashboard-api-7sngg27rcq-as.a.run.app/`,
@@ -16,6 +16,15 @@ export default {
     instance({
       method: 'GET',
       url: `users/${usid}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  putUserById: (token?: string, usid?: string, data?: putUser) =>
+    instance({
+      method: 'PUT',
+      url: `users/${usid}`,
+      data: data,
       headers: {
         Authorization: `Bearer ${token}`,
       },

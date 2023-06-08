@@ -46,3 +46,7 @@ export interface PostLogin {
   email?: string;
   password?: string;
 }
+export interface putUser extends PostLogin {
+  full_name?: string;
+  confirmPassword?: string;
+}
