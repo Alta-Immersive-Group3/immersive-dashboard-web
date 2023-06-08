@@ -1,3 +1,7 @@
+import withReactContent from 'sweetalert2-react-content';
+import swal from '../utils/swal';
+import toast from '../utils/toast';
+
 import React, { useEffect, useState } from 'react';
 import { Layout, Section } from '../components/Layout';
 import { Input, Select } from '../components/Input';
@@ -9,17 +13,28 @@ import {
   FaUserTie,
   FaUserTimes,
 } from 'react-icons/fa';
-import { addUserType } from '../utils/type';
+import { addUserType, usersType } from '../utils/type';
+import { useCookies } from 'react-cookie';
+import api from '../utils/api';
 
 const Userlist = () => {
   const [handleTime, setHandleTime] = useState<string>('');
   const [isAdmin, setIsAdmin] = useState<boolean>(true);
   const [objModal, setobjModal] = useState<addUserType>();
+  const [dataUsers, setDataUsers] = useState<usersType[]>([]);
+
+  const MySwal = withReactContent(swal);
+  const MyToast = withReactContent(toast);
+
+  const [cookie, setCookie] = useCookies(['id', 'role', 'token', 'full_name']);
+  const ckToken = cookie.token;
+  const ckId = cookie.id;
+  const ckRole = cookie.role;
+  const ckName = cookie.full_name;
 
   const timeGreeting = () => {
     const currentDate = new Date();
     const currentHour = currentDate.getHours();
-
     if (currentHour < 12) {
       setHandleTime('Good Morning,');
     } else if (currentHour >= 12 && currentHour < 17) {
@@ -41,8 +56,39 @@ const Userlist = () => {
     });
   };
 
-  useEffect(() => {
+  const teamTranslate = (id_team?: number) => {
+    if (id_team === 1) return 'Manager';
+    else if (id_team === 2) return 'Mentor';
+    else if (id_team === 3) return 'Placement';
+    else if (id_team === 4) return 'People Skill';
+  };
+
+  const fetchGetAll = async () => {
+    await api
+      .getUserAll(ckToken)
+      .then((response) => {
+        const { data } = response.data;
+        setDataUsers(data);
+
+        console.log(dataUsers);
+      })
+      .catch((error) => {
+        MySwal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: `error :  ${error.message}`,
+          showCancelButton: false,
+        });
+      });
+  };
+
+  const dedicatedFetch = async () => {
     timeGreeting();
+    await fetchGetAll();
+  };
+
+  useEffect(() => {
+    dedicatedFetch();
   }, []);
 
   return (
@@ -170,15 +216,15 @@ const Userlist = () => {
         >
           <div className="flex flex-col gap-3">
             <p className="text-secondary tracking-wide font-semibold text-3xl">
-              {handleTime} Jhon Doe!
+              {handleTime} {ckName}!
             </p>
             <p className="text-secondary tracking-wide text-xl">Userlist</p>
           </div>
-          <p className="text-secondary tracking-wide text-xl">User Default</p>
+          <p className="text-secondary tracking-wide text-xl">User {ckRole}</p>
         </div>
 
         <div className="w-full min-h-[83%] bg-base-300 rounded-xl flex flex-col gap-5 p-8 items-center">
-          {isAdmin ? (
+          {ckRole === 'admin' ? (
             <>
               <div className="w-full flex justify-end">
                 <label
@@ -197,7 +243,6 @@ const Userlist = () => {
                       <th>Email</th>
                       <th>Team</th>
                       <th>Role</th>
-                      <th>Status</th>
                       <th>Edit</th>
                       <th>Delete</th>
                     </tr>
@@ -211,7 +256,6 @@ const Userlist = () => {
                           <td>{prop.email}</td>
                           <td>{prop.team}</td>
                           <td>{prop.role}</td>
-                          <td>{prop.status}</td>
                           <td>
                             <label
                               onClick={() => handleEdit(prop)}
@@ -244,19 +288,17 @@ const Userlist = () => {
                       <th>Email</th>
                       <th>Team</th>
                       <th>Role</th>
-                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {dummy.map((prop, idx) => {
+                    {dataUsers.map((prop, idx) => {
                       return (
-                        <tr>
+                        <tr key={idx}>
                           <th>{idx + 1}</th>
-                          <td>{prop.full_name}</td>
+                          <td>{prop.name}</td>
                           <td>{prop.email}</td>
-                          <td>{prop.team}</td>
-                          <td>{prop.role}</td>
-                          <td>{prop.status}</td>
+                          <td>{teamTranslate(prop.id_team)}</td>
+                          <td className="capitalize">{prop.role}</td>
                         </tr>
                       );
                     })}

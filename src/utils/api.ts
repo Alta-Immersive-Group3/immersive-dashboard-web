@@ -29,4 +29,12 @@ export default {
         Authorization: `Bearer ${token}`,
       },
     }),
+  getUserAll: (token?: string) =>
+    instance({
+      method: 'GET',
+      url: `users`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
 };

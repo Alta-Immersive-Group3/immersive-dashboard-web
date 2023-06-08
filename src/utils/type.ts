@@ -50,3 +50,11 @@ export interface putUser extends PostLogin {
   full_name?: string;
   confirmPassword?: string;
 }
+
+export interface usersType {
+  id?: number;
+  name?: string;
+  email?: string;
+  role?: string;
+  id_team?: number;
+}
