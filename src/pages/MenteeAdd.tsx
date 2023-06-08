@@ -7,7 +7,7 @@ import { Layout, Section } from '../components/Layout';
 import { Input, Select, TextArea } from '../components/Input';
 import { data } from '../json/dataStatus.json';
 
-import { addClassType, addUserType } from '../utils/type';
+import { addClassType } from '../utils/type';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
