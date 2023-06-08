@@ -17,11 +17,22 @@ import { addUserType, usersType } from '../utils/type';
 import { useCookies } from 'react-cookie';
 import api from '../utils/api';
 
+import { FormikValues, useFormik } from 'formik';
+import * as Yup from 'yup';
+
+const addSchema = Yup.object().shape({
+  full_name: Yup.string().required('Required'),
+  email: Yup.string().email('please enter a valid email').required('Required'),
+  password: Yup.string().required('Required'),
+  role: Yup.string().required('Required'),
+  id_team: Yup.number().positive().integer().required('Required'),
+});
+
 const Userlist = () => {
   const [handleTime, setHandleTime] = useState<string>('');
-  const [isAdmin, setIsAdmin] = useState<boolean>(true);
   const [objModal, setobjModal] = useState<addUserType>();
   const [dataUsers, setDataUsers] = useState<usersType[]>([]);
+  const [addObject, setAddObject] = useState<addUserType>();
 
   const MySwal = withReactContent(swal);
   const MyToast = withReactContent(toast);
@@ -56,11 +67,22 @@ const Userlist = () => {
     });
   };
 
+  const teamOptions = [
+    { label: 'Manager', value: 1 },
+    { label: 'Mentor', value: 2 },
+    { label: 'Placement', value: 3 },
+    { label: 'People Skill', value: 4 },
+  ];
+
   const teamTranslate = (id_team?: number) => {
     if (id_team === 1) return 'Manager';
     else if (id_team === 2) return 'Mentor';
     else if (id_team === 3) return 'Placement';
     else if (id_team === 4) return 'People Skill';
+  };
+  const statusTranslate = (status?: boolean) => {
+    if (status === true) return 'Active';
+    else return 'Deactive';
   };
 
   const fetchGetAll = async () => {
@@ -69,8 +91,6 @@ const Userlist = () => {
       .then((response) => {
         const { data } = response.data;
         setDataUsers(data);
-
-        console.log(dataUsers);
       })
       .catch((error) => {
         MySwal.fire({
@@ -80,6 +100,64 @@ const Userlist = () => {
           showCancelButton: false,
         });
       });
+  };
+
+  const addUser = async (datad: object) => {
+    await api
+      .postAddUser(ckToken, datad)
+      .then((response) => {
+        const { message } = response.data;
+
+        fetchGetAll();
+        formikAdd.resetForm();
+        MyToast.fire({
+          icon: 'success',
+          title: message,
+        });
+      })
+      .catch((error) => {
+        MySwal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: `error :  ${error.message}`,
+          showCancelButton: false,
+        });
+      });
+  };
+
+  const delUser = async (usid?: string) => {
+    await api
+      .delUserById(ckToken, usid)
+      .then((response) => {
+        const { data } = response.data;
+        setDataUsers(data);
+      })
+      .catch((error) => {
+        MySwal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: `error :  ${error.message}`,
+          showCancelButton: false,
+        });
+      });
+  };
+
+  const formikAdd = useFormik({
+    initialValues: {
+      full_name: '',
+      email: '',
+      password: '',
+      role: '',
+      id_team: '',
+    },
+    validationSchema: addSchema,
+    onSubmit: (values) => {
+      addUser(values);
+    },
+  });
+
+  const handleAgeChange = (value: string) => {
+    formikAdd.setFieldValue('id_team', parseInt(value, 10));
   };
 
   const dedicatedFetch = async () => {
@@ -94,40 +172,78 @@ const Userlist = () => {
   return (
     <Layout>
       <Modals id="modal-add">
-        <div className="flex flex-col gap-5 items-center">
+        <form
+          onSubmit={formikAdd.handleSubmit}
+          className="flex flex-col gap-5 items-center"
+        >
           <p className="text-secondary font-medium tracking-wide text-2xl mb-3">
             Add User
           </p>
           <Input
             id="full_name"
             name="full_name"
-            label="Full Name"
+            label="full name"
             type="text"
+            value={formikAdd.values.full_name}
+            onChange={formikAdd.handleChange}
+            onBlur={formikAdd.handleBlur}
+            error={formikAdd.errors.full_name}
+            touch={formikAdd.touched.full_name}
           />
           <Input
             id="email"
             name="email"
-            label="Email"
+            label="email"
             type="email"
+            value={formikAdd.values.email}
+            onChange={formikAdd.handleChange}
+            onBlur={formikAdd.handleBlur}
+            error={formikAdd.errors.email}
+            touch={formikAdd.touched.email}
           />
           <Input
             id="password"
             name="password"
-            label="Password"
+            label="password"
             type="password"
+            value={formikAdd.values.password}
+            onChange={formikAdd.handleChange}
+            onBlur={formikAdd.handleBlur}
+            error={formikAdd.errors.password}
+            touch={formikAdd.touched.password}
           />
           <Select
             id="role"
             name="role"
             label="Role"
-            options={['Default', 'Admin']}
-          />
+            value={formikAdd.values.role}
+            onChangeSelect={formikAdd.handleChange}
+            onBlur={formikAdd.handleBlur}
+            error={formikAdd.errors.role}
+            touch={formikAdd.touched.role}
+          >
+            <option value="default">Default</option>
+            <option value="admin">Admin</option>
+          </Select>
           <Select
-            id="team"
-            name="team"
+            id="id_team"
+            name="id_team"
             label="Team"
-            options={['Academic', 'Placement', 'People Skill']}
-          />
+            value={formikAdd.values.id_team.toString()}
+            onChangeSelect={(e) => handleAgeChange(e.target.value)}
+            onBlur={formikAdd.handleBlur}
+            error={formikAdd.errors.id_team}
+            touch={formikAdd.touched.id_team}
+          >
+            {teamOptions.map((opt) => (
+              <option
+                key={opt.value}
+                value={opt.value}
+              >
+                {opt.label}
+              </option>
+            ))}
+          </Select>
 
           <div className="w-full flex justify-end gap-3">
             <div className="modal-action mt-0 ">
@@ -138,9 +254,14 @@ const Userlist = () => {
                 Close
               </label>
             </div>
-            <button className="btn btn-secondary w-32">Submit</button>
+            <button
+              type="submit"
+              className="btn btn-secondary w-32"
+            >
+              Submit
+            </button>
           </div>
-        </div>
+        </form>
       </Modals>
       <Modals id="modal-edit">
         <div className="flex flex-col gap-5 items-center">
@@ -161,24 +282,7 @@ const Userlist = () => {
             type="email"
             value={objModal?.email}
           />
-          <Select
-            id="role"
-            name="role"
-            label="Role"
-            options={['Default', 'Admin']}
-          />
-          <Select
-            id="team"
-            name="team"
-            label="Team"
-            options={['Academic', 'Placement', 'People Skill']}
-          />
-          <Select
-            id="status"
-            name="status"
-            label="Status"
-            options={['Active']}
-          />
+
           <Input
             id="password"
             name="password"
@@ -243,27 +347,29 @@ const Userlist = () => {
                       <th>Email</th>
                       <th>Team</th>
                       <th>Role</th>
+                      <th>Status</th>
                       <th>Edit</th>
                       <th>Delete</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {dummy.map((prop, idx) => {
+                    {dataUsers.map((prop, idx) => {
                       return (
-                        <tr>
+                        <tr key={idx}>
                           <th>{idx + 1}</th>
-                          <td>{prop.full_name}</td>
+                          <td>{prop.name}</td>
                           <td>{prop.email}</td>
-                          <td>{prop.team}</td>
-                          <td>{prop.role}</td>
+                          <td>{teamTranslate(prop.id_team)}</td>
+                          <td className="capitalize">{prop.role}</td>
+                          <td>{statusTranslate(prop.status)}</td>
                           <td>
-                            <label
+                            {/* <label
                               onClick={() => handleEdit(prop)}
                               className="btn p-0 min-h-0 h-0 p text-base"
                               htmlFor="modal-edit"
                             >
                               <FaUserEdit />
-                            </label>
+                            </label> */}
                           </td>
                           <td>
                             <button className="btn p-0 min-h-0 h-0 p text-base">
@@ -288,6 +394,7 @@ const Userlist = () => {
                       <th>Email</th>
                       <th>Team</th>
                       <th>Role</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -299,6 +406,7 @@ const Userlist = () => {
                           <td>{prop.email}</td>
                           <td>{teamTranslate(prop.id_team)}</td>
                           <td className="capitalize">{prop.role}</td>
+                          <td>{statusTranslate(prop.status)}</td>
                         </tr>
                       );
                     })}

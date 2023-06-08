@@ -5,6 +5,8 @@ export interface addUserType {
   role?: string;
   team?: string;
   status?: string;
+  password?: string;
+  id_team?: number;
 }
 
 export interface addClassType {
@@ -57,4 +59,5 @@ export interface usersType {
   email?: string;
   role?: string;
   id_team?: number;
+  status?: boolean;
 }

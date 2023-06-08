@@ -37,4 +37,21 @@ export default {
         Authorization: `Bearer ${token}`,
       },
     }),
+  postAddUser: (token?: string, data?: any) =>
+    instance({
+      method: 'POST',
+      url: `users`,
+      data: data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  delUserById: (token?: string, usid?: string) =>
+    instance({
+      method: 'DELETE',
+      url: `users/${usid}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
 };

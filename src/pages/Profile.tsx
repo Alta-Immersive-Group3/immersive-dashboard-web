@@ -30,7 +30,6 @@ const Profile = () => {
 
   const MySwal = withReactContent(swal);
   const MyToast = withReactContent(toast);
-  const navigate = useNavigate();
 
   const [cookie, setCookie] = useCookies(['id', 'role', 'token', 'full_name']);
   const ckToken = cookie.token;
