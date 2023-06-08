@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import ScrollToTop from '../components/ScrollToTop';
 import NotFound from '../pages/NotFound';
@@ -11,15 +11,19 @@ import Menteelist from '../pages/Menteelist';
 import MenteeLog from '../pages/MenteeLog';
 import MenteeEdit from '../pages/MenteeEdit';
 import MenteeAdd from '../pages/MenteeAdd';
+import { useCookies } from 'react-cookie';
 
 const Router = () => {
+  const [cookie] = useCookies(['token']);
+  const ckTk = cookie.token;
+
   return (
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
         <Route
           path="/"
-          element={<Homepage />}
+          element={ckTk ? <Homepage /> : <Navigate to="/Login" />}
         />
         <Route
           path="/Login"
