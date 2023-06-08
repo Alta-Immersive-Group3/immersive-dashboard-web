@@ -7,19 +7,13 @@ import { Layout, Section } from '../components/Layout';
 import { Input, Select } from '../components/Input';
 import dummy from '../json/dummyUser.json';
 import { Modals } from '../components/Modals';
-import {
-  FaUserAltSlash,
-  FaUserEdit,
-  FaUserTie,
-  FaUserTimes,
-} from 'react-icons/fa';
+import { FaUserEdit, FaUserTimes } from 'react-icons/fa';
 import { addUserType, usersType } from '../utils/type';
 import { useCookies } from 'react-cookie';
 import api from '../utils/api';
 
-import { FormikValues, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom';
 
 const addSchema = Yup.object().shape({
   full_name: Yup.string().required('Required'),
@@ -35,11 +29,10 @@ const Userlist = () => {
   const [dataUsers, setDataUsers] = useState<addUserType[]>([]);
   const [addObject, setAddObject] = useState<addUserType>();
 
-  const navigate = useNavigate();
   const MySwal = withReactContent(swal);
   const MyToast = withReactContent(toast);
 
-  const [cookie, setCookie] = useCookies(['id', 'role', 'token', 'full_name']);
+  const [cookie] = useCookies(['id', 'role', 'token', 'full_name']);
   const ckToken = cookie.token;
   const ckId = cookie.id;
   const ckRole = cookie.role;
@@ -78,6 +71,7 @@ const Userlist = () => {
     else if (id_team === 3) return 'Placement';
     else if (id_team === 4) return 'People Skill';
   };
+
   const statusTranslate = (status?: boolean) => {
     if (status === true) return 'Active';
     else return 'Deactive';
