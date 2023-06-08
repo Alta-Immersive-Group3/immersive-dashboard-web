@@ -19,6 +19,7 @@ import api from '../utils/api';
 
 import { FormikValues, useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
 
 const addSchema = Yup.object().shape({
   full_name: Yup.string().required('Required'),
@@ -30,10 +31,11 @@ const addSchema = Yup.object().shape({
 
 const Userlist = () => {
   const [handleTime, setHandleTime] = useState<string>('');
-  const [objModal, setobjModal] = useState<addUserType>();
-  const [dataUsers, setDataUsers] = useState<usersType[]>([]);
+  const [idModalEdit, setidModalEdit] = useState<number>();
+  const [dataUsers, setDataUsers] = useState<addUserType[]>([]);
   const [addObject, setAddObject] = useState<addUserType>();
 
+  const navigate = useNavigate();
   const MySwal = withReactContent(swal);
   const MyToast = withReactContent(toast);
 
@@ -57,14 +59,10 @@ const Userlist = () => {
     }
   };
 
-  const handleEdit = (props: addUserType) => {
-    setobjModal({
-      email: props.email,
-      full_name: props.full_name,
-      id: props.id,
-      role: props.role,
-      team: props.team,
-    });
+  const handleTransfer = async (props: addUserType) => {
+    await formikEdit.setFieldValue('full_name', props.name);
+    await formikEdit.setFieldValue('email', props.email);
+    setidModalEdit(props.id);
   };
 
   const teamOptions = [
@@ -91,7 +89,6 @@ const Userlist = () => {
       .then((response) => {
         const { data } = response.data;
         setDataUsers(data);
-        console.log(dataUsers);
       })
       .catch((error) => {
         MySwal.fire({
@@ -111,6 +108,30 @@ const Userlist = () => {
 
         fetchGetAll();
         formikAdd.resetForm();
+        MyToast.fire({
+          icon: 'success',
+          title: message,
+        });
+      })
+      .catch((error) => {
+        MySwal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: `error :  ${error.message}`,
+          showCancelButton: false,
+        });
+      });
+  };
+
+  const editUser = async (datad: object, usid: any) => {
+    await api
+      .editUsersById(ckToken, usid, datad)
+      .then((response) => {
+        const { message } = response.data;
+
+        fetchGetAll();
+        formikEdit.resetForm();
+
         MyToast.fire({
           icon: 'success',
           title: message,
@@ -174,8 +195,25 @@ const Userlist = () => {
     },
   });
 
+  const formikEdit = useFormik({
+    initialValues: {
+      full_name: '',
+      email: '',
+      password: '',
+      role: '',
+      id_team: '',
+    },
+    validationSchema: addSchema,
+    onSubmit: (values) => {
+      editUser(values, idModalEdit);
+    },
+  });
+
   const handleAgeChange = (value: string) => {
     formikAdd.setFieldValue('id_team', parseInt(value, 10));
+  };
+  const handleEditChange = (value: string) => {
+    formikEdit.setFieldValue('id_team', parseInt(value, 10));
   };
 
   const dedicatedFetch = async () => {
@@ -282,37 +320,78 @@ const Userlist = () => {
         </form>
       </Modals>
       <Modals id="modal-edit">
-        <div className="flex flex-col gap-5 items-center">
+        <form
+          onSubmit={formikEdit.handleSubmit}
+          className="flex flex-col gap-5 items-center"
+        >
           <p className="text-secondary font-medium tracking-wide text-2xl mb-3">
             Edit User
           </p>
           <Input
             id="full_name"
             name="full_name"
-            label="Full Name"
-            value={objModal?.full_name}
+            label="full name"
             type="text"
+            value={formikEdit.values.full_name}
+            onChange={formikEdit.handleChange}
+            onBlur={formikEdit.handleBlur}
+            error={formikEdit.errors.full_name}
+            touch={formikEdit.touched.full_name}
           />
           <Input
             id="email"
             name="email"
-            label="Email"
+            label="email"
             type="email"
-            value={objModal?.email}
+            value={formikEdit.values.email}
+            onChange={formikEdit.handleChange}
+            onBlur={formikEdit.handleBlur}
+            error={formikEdit.errors.email}
+            touch={formikEdit.touched.email}
           />
-
           <Input
             id="password"
             name="password"
-            label="Password"
+            label="password"
             type="password"
+            value={formikEdit.values.password}
+            onChange={formikEdit.handleChange}
+            onBlur={formikEdit.handleBlur}
+            error={formikEdit.errors.password}
+            touch={formikEdit.touched.password}
           />
-          <Input
-            id="retype password"
-            name="retype password"
-            label="Retype Password"
-            type="password"
-          />
+          <Select
+            id="role"
+            name="role"
+            label="Role"
+            value={formikEdit.values.role}
+            onChangeSelect={formikEdit.handleChange}
+            onBlur={formikEdit.handleBlur}
+            error={formikEdit.errors.role}
+            touch={formikEdit.touched.role}
+          >
+            <option value="default">Default</option>
+            <option value="admin">Admin</option>
+          </Select>
+          <Select
+            id="id_team"
+            name="id_team"
+            label="Team"
+            value={formikEdit.values.id_team.toString()}
+            onChangeSelect={(e) => handleEditChange(e.target.value)}
+            onBlur={formikEdit.handleBlur}
+            error={formikEdit.errors.id_team}
+            touch={formikEdit.touched.id_team}
+          >
+            {teamOptions.map((opt) => (
+              <option
+                key={opt.value}
+                value={opt.value}
+              >
+                {opt.label}
+              </option>
+            ))}
+          </Select>
 
           <div className="w-full flex justify-end gap-3">
             <div className="modal-action mt-0 ">
@@ -323,9 +402,14 @@ const Userlist = () => {
                 Close
               </label>
             </div>
-            <button className="btn btn-secondary w-32">Submit</button>
+            <button
+              type="submit"
+              className="btn btn-secondary w-32"
+            >
+              Submit
+            </button>
           </div>
-        </div>
+        </form>
       </Modals>
 
       <Section
@@ -371,7 +455,7 @@ const Userlist = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {dataUsers.map((prop, idx) => {
+                    {dataUsers.map((prop: any, idx) => {
                       return (
                         <tr key={idx}>
                           <th>{idx + 1}</th>
@@ -381,13 +465,13 @@ const Userlist = () => {
                           <td className="capitalize">{prop.role}</td>
                           <td>{statusTranslate(prop.status)}</td>
                           <td>
-                            {/* <label
-                              onClick={() => handleEdit(prop)}
+                            <label
+                              onClick={() => handleTransfer(prop)}
                               className="btn p-0 min-h-0 h-0 p text-base"
                               htmlFor="modal-edit"
                             >
                               <FaUserEdit />
-                            </label> */}
+                            </label>
                           </td>
                           <td>
                             <button
@@ -419,7 +503,7 @@ const Userlist = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {dataUsers.map((prop, idx) => {
+                    {dataUsers.map((prop: any, idx) => {
                       return (
                         <tr key={idx}>
                           <th>{idx + 1}</th>

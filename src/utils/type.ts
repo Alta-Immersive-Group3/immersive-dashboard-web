@@ -7,6 +7,7 @@ export interface addUserType {
   status?: string;
   password?: string;
   id_team?: number;
+  name?: string;
 }
 
 export interface addClassType {

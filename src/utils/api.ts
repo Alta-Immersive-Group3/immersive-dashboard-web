@@ -54,4 +54,13 @@ export default {
         Authorization: `Bearer ${token}`,
       },
     }),
+  editUsersById: (token?: string, usid?: string, data?: putUser) =>
+    instance({
+      method: 'PUT',
+      url: `users/${usid}`,
+      data: data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
 };
