@@ -5,7 +5,6 @@ import toast from '../utils/toast';
 import React, { useEffect, useState } from 'react';
 import { Layout, Section } from '../components/Layout';
 import { Input, Select } from '../components/Input';
-import dummy from '../json/dummyClass.json';
 import { Modals } from '../components/Modals';
 import { FaUsersCog, FaUsersSlash } from 'react-icons/fa';
 import { addClassType } from '../utils/type';
