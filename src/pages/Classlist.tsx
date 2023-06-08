@@ -14,6 +14,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useCookies } from 'react-cookie';
 import apiSwag from '../utils/apiSwag';
+import api from '../utils/api';
 
 const addSchema = Yup.object().shape({
   graduate_date: Yup.string().required('Required'),
@@ -50,6 +51,17 @@ const Classlist = () => {
     }
   };
 
+  const dateType = (date: any) => {
+    const dated: any = new Date(date);
+    const formattedDate = dated.toLocaleDateString('en-GB', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+    return formattedDate;
+  };
+
   const handleTransfer = async (props: addClassType) => {
     await formikEditClass.setFieldValue('name', props.name);
     await formikEditClass.setFieldValue('graduate_date', props.graduate_date);
@@ -58,7 +70,7 @@ const Classlist = () => {
   };
 
   const fetchGetAllClass = async () => {
-    await apiSwag
+    await api
       .getClassAll(ckToken)
       .then((response) => {
         const { data } = response.data;
@@ -75,12 +87,14 @@ const Classlist = () => {
   };
 
   const addClass = async (datad: object) => {
-    await apiSwag
-      .postAddUser(ckToken, datad)
+    await api
+      .postAddClass(ckToken, datad)
       .then((response) => {
         const { message } = response.data;
         fetchGetAllClass();
         formikAddClass.resetForm();
+        formikAddClass.setFieldValue('pic', parseInt(ckId));
+        formikEditClass.setFieldValue('pic', parseInt(ckId));
         MyToast.fire({
           icon: 'success',
           title: message,
@@ -97,13 +111,15 @@ const Classlist = () => {
   };
 
   const EditClass = async (datad: object, usid: any) => {
-    await apiSwag
+    await api
       .editClassById(ckToken, usid, datad)
       .then((response) => {
         const { message } = response.data;
 
         fetchGetAllClass();
         formikEditClass.resetForm();
+        formikAddClass.setFieldValue('pic', parseInt(ckId));
+        formikEditClass.setFieldValue('pic', parseInt(ckId));
 
         MyToast.fire({
           icon: 'success',
@@ -121,8 +137,8 @@ const Classlist = () => {
   };
 
   const delClass = async (usid?: any) => {
-    await apiSwag
-      .delUserById(ckToken, usid)
+    await api
+      .delClassesById(ckToken, usid)
       .then((response) => {
         const { message } = response.data;
         fetchGetAllClass();
@@ -360,12 +376,12 @@ const Classlist = () => {
               <tbody>
                 {objModal.map((prop: addClassType, idx) => {
                   return (
-                    <tr>
+                    <tr key={prop.id}>
                       <th>{idx + 1}</th>
                       <td>{prop.name}</td>
                       <td>{prop.pic}</td>
-                      <td>{prop.start_date}</td>
-                      <td>{prop.graduate_date}</td>
+                      <td>{dateType(prop.start_date)}</td>
+                      <td>{dateType(prop.graduate_date)}</td>
                       <td>
                         <label
                           onClick={() => handleTransfer(prop)}

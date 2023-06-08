@@ -63,4 +63,49 @@ export default {
         Authorization: `Bearer ${token}`,
       },
     }),
+
+  // CLASS //
+
+  getClassAll: (token?: string) =>
+    instance({
+      method: 'GET',
+      url: `classes`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  postAddClass: (token?: string, data?: any) =>
+    instance({
+      method: 'POST',
+      url: `classes`,
+      data: data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  getClassById: (token?: string, cid?: string) =>
+    instance({
+      method: 'GET',
+      url: `classes/${cid}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  editClassById: (token?: string, usid?: string, data?: putUser) =>
+    instance({
+      method: 'PUT',
+      url: `classes/${usid}`,
+      data: data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  delClassesById: (token?: string, usid?: any) =>
+    instance({
+      method: 'DELETE',
+      url: `classes/${usid}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
 };
