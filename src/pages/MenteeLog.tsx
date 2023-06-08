@@ -6,6 +6,8 @@ import { data } from '../json/dataStatus.json';
 import React, { useEffect, useState } from 'react';
 import { Layout, Section } from '../components/Layout';
 import { Input, Select, TextArea } from '../components/Input';
+import { data as dataStatus } from '../json/dataStatus.json';
+
 import dummy from '../json/dummyLog.json';
 import { Modals } from '../components/Modals';
 import {
@@ -14,13 +16,35 @@ import {
   FaUserTie,
   FaUserTimes,
 } from 'react-icons/fa';
-import { addUserType } from '../utils/type';
+import {
+  addClassType,
+  addFeedbackType,
+  addUserType,
+  menteesType,
+} from '../utils/type';
 import { useCookies } from 'react-cookie';
+import { useParams } from 'react-router-dom';
+import api from '../utils/api';
+
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
+const addSchema = Yup.object().shape({
+  notes: Yup.string().required('Required'),
+  id_user: Yup.number().positive().integer().required('Required'),
+  id_mentee: Yup.number().positive().integer().required('Required'),
+  id_status: Yup.number().positive().integer().required('Required'),
+  proof: Yup.string().required('Required'),
+});
 
 const MenteeLog = () => {
   const [handleTime, setHandleTime] = useState<string>('');
   const [isAdmin, setIsAdmin] = useState<boolean>(true);
   const [objModal, setobjModal] = useState<addUserType>();
+  const [objLog, setObjLog] = useState<menteesType>();
+  const [objClass, setObjClass] = useState<addClassType[]>([]);
+  const [objFeedback, setObjFeedback] = useState<addFeedbackType[]>([]);
+  const params = useParams();
 
   const MySwal = withReactContent(swal);
   const MyToast = withReactContent(toast);
@@ -30,6 +54,7 @@ const MenteeLog = () => {
   const ckId = cookie.id;
   const ckRole = cookie.role;
   const ckName = cookie.full_name;
+  const { mentee_id } = params;
 
   const timeGreeting = () => {
     const currentDate = new Date();
@@ -46,32 +71,175 @@ const MenteeLog = () => {
     }
   };
 
-  const handleEdit = (props: addUserType) => {
-    setobjModal({
-      email: props.email,
-      full_name: props.full_name,
-      id: props.id,
-      role: props.role,
-      team: props.team,
-    });
+  const fetchGetAllClass = async () => {
+    await api
+      .getClassAll(ckToken)
+      .then((response) => {
+        const { data } = response.data;
+        setObjClass(data);
+      })
+      .catch((error) => {
+        MySwal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: `error :  ${error.message}`,
+          showCancelButton: false,
+        });
+      });
+  };
+
+  const fetchMenteeByID = async () => {
+    await api
+      .getMenteeById(ckToken, mentee_id)
+      .then((response) => {
+        const { data } = response.data;
+        setObjLog(data);
+      })
+      .catch((error) => {
+        MySwal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: `error :  ${error.message}`,
+          showCancelButton: false,
+        });
+      });
+  };
+
+  const fetchLogByID = async () => {
+    await api
+      .getFeedbackById(ckToken, mentee_id)
+      .then((response) => {
+        const { data } = response.data;
+
+        setObjFeedback(data.feedbacks);
+      })
+      .catch((error) => {
+        MySwal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: `error :  ${error.message}`,
+          showCancelButton: false,
+        });
+      });
+  };
+
+  const addNotes = async (datad: object) => {
+    await api
+      .postFeedback(ckToken, datad)
+      .then((response) => {
+        const { message } = response.data;
+        fetchLogByID();
+        formikAdd.resetForm();
+        formikAdd.setFieldValue('id_user', parseInt(ckId));
+        formikAdd.setFieldValue('id_mentee', Number(mentee_id));
+
+        MyToast.fire({
+          icon: 'success',
+          title: message,
+        });
+      })
+      .catch((error) => {
+        MySwal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: `error :  ${error.message}`,
+          showCancelButton: false,
+        });
+      });
+  };
+
+  const formikAdd = useFormik({
+    initialValues: {
+      notes: '',
+      id_user: '',
+      id_mentee: '',
+      id_status: '',
+      proof: '',
+    },
+    validationSchema: addSchema,
+    onSubmit: (values) => {
+      addNotes(values);
+    },
+  });
+
+  const getClassName = (id_class?: number) => {
+    const dataItem = objClass.find((item) => item.id === id_class);
+    return dataItem?.name;
+  };
+
+  const getDataName = (id?: number): string | undefined => {
+    const dataItem = dataStatus.find((item) => item.id === id);
+    return dataItem?.name;
+  };
+
+  const handleIdStatusChange = (value: string) => {
+    formikAdd.setFieldValue('id_status', parseInt(value, 10));
+  };
+
+  const dedicatedFetch = async () => {
+    timeGreeting();
+    await fetchGetAllClass();
+    await fetchMenteeByID();
+    await fetchLogByID();
+    await formikAdd.setFieldValue('id_user', parseInt(ckId));
+    await formikAdd.setFieldValue('id_mentee', Number(mentee_id));
   };
 
   useEffect(() => {
-    timeGreeting();
+    dedicatedFetch();
   }, []);
 
   return (
     <Layout>
       <Modals id="modal-add">
-        <div className="flex flex-col gap-5 items-center">
+        <form
+          onSubmit={formikAdd.handleSubmit}
+          className="flex flex-col gap-5 items-center"
+        >
           <p className="text-secondary font-medium tracking-wide text-2xl mb-3">
             Add Log
           </p>
+          <Select
+            id="id_status"
+            name="id_status"
+            label="Status"
+            value={formikAdd.values.id_status.toString()}
+            onChangeSelect={(e) => handleIdStatusChange(e.target.value)}
+            onBlur={formikAdd.handleBlur}
+            error={formikAdd.errors.id_status}
+            touch={formikAdd.touched.id_status}
+          >
+            {data.map((opt) => (
+              <option
+                key={opt.id}
+                value={opt.id}
+              >
+                {opt.name}
+              </option>
+            ))}
+          </Select>
 
           <TextArea
             id="notes"
             name="notes"
-            label="notes"
+            label="Notes"
+            value={formikAdd.values.notes}
+            onChange={formikAdd.handleChange}
+            onBlur={formikAdd.handleBlur}
+            error={formikAdd.errors.notes}
+            touch={formikAdd.touched.notes}
+          />
+
+          <Input
+            id="proof"
+            name="proof"
+            label="Proofing"
+            type="text"
+            value={formikAdd.values.proof}
+            onChange={formikAdd.handleChange}
+            onBlur={formikAdd.handleBlur}
+            error={formikAdd.errors.proof}
+            touch={formikAdd.touched.proof}
           />
 
           <div className="w-full flex justify-end gap-3">
@@ -85,7 +253,7 @@ const MenteeLog = () => {
             </div>
             <button className="btn btn-secondary w-32">Submit</button>
           </div>
-        </div>
+        </form>
       </Modals>
 
       <Section
@@ -109,37 +277,37 @@ const MenteeLog = () => {
           <div className="w-full h-[18%]  flex justify-between">
             <div className="flex flex-col gap-1">
               <p className="text-secondary uppercase tracking-wide font-semibold text-xl">
-                {dummy.data.full_name}{' '}
+                {objLog?.full_name}{' '}
                 <span className="tracking-normal capitalize font-normal text-lg">
                   {'{'}
-                  {dummy.data.nick_name}
+                  {objLog?.nick_name}
                   {'}'}
                 </span>
               </p>
               <p className="text-secondary tracking-wide text-base">
-                {dummy.data.class}
+                {getClassName(objLog?.id_class)}
               </p>
               <p className="text-secondary tracking-wide text-base">
-                {dummy.data.institution}
+                {objLog?.institution}
               </p>
             </div>
             <div className="flex flex-col gap-1">
               <p className="text-secondary tracking-wide font-semibold text-base">
                 Phone:{' '}
                 <span className="tracking-normal font-normal text-base">
-                  {dummy.data.phone}
+                  {objLog?.phone}
                 </span>
               </p>
               <p className="text-secondary tracking-wide font-semibold text-base">
                 Telegram:{' '}
                 <span className="tracking-normal font-normal text-base">
-                  {dummy.data.telegram}
+                  {objLog?.telegram}
                 </span>
               </p>
               <p className="text-secondary tracking-wide font-semibold text-base">
                 Email:{' '}
                 <span className="tracking-normal font-normal text-base">
-                  {dummy.data.email}
+                  {objLog?.email}
                 </span>
               </p>
             </div>
@@ -155,17 +323,19 @@ const MenteeLog = () => {
           </div>
 
           <div className="w-full rounded-xl grid grid-cols-1 gap-5">
-            {dummy.data.feedback.map((item) => {
+            {objFeedback?.map((item, idx) => {
               return (
-                <div className="w-full bg-base-200 p-2 rounded-lg">
+                <div
+                  key={idx}
+                  className="w-full bg-base-200 p-2 rounded-lg"
+                >
                   <div className="flex justify-between">
                     <div className="flex flex-col gap-1 text-neutral">
                       <p className=" ">
                         Status:{' '}
-                        <span className="font-medium">{item.status}</span>
-                      </p>
-                      <p>
-                        PIC: <span className="font-medium">{item.users}</span>
+                        <span className="font-medium">
+                          {getDataName(item.id_status)}
+                        </span>
                       </p>
                     </div>
                     <div className="w-[60%]">
