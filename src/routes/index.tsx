@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import ScrollToTop from '../components/ScrollToTop';
 import NotFound from '../pages/NotFound';
@@ -7,15 +7,23 @@ import Profile from '../pages/Profile';
 import Homepage from '../pages';
 import Userlist from '../pages/Userlist';
 import Classlist from '../pages/Classlist';
+import Menteelist from '../pages/Menteelist';
+import MenteeLog from '../pages/MenteeLog';
+import MenteeEdit from '../pages/MenteeEdit';
+import MenteeAdd from '../pages/MenteeAdd';
+import { useCookies } from 'react-cookie';
 
 const Router = () => {
+  const [cookie] = useCookies(['token']);
+  const ckTk = cookie.token;
+
   return (
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
         <Route
           path="/"
-          element={<Homepage />}
+          element={ckTk ? <Homepage /> : <Navigate to="/Login" />}
         />
         <Route
           path="/Login"
@@ -26,12 +34,28 @@ const Router = () => {
           element={<Profile />}
         />
         <Route
-          path="/userlist"
+          path="/users"
           element={<Userlist />}
         />
         <Route
-          path="/classlist"
+          path="/classes"
           element={<Classlist />}
+        />
+        <Route
+          path="/mentee"
+          element={<Menteelist />}
+        />
+        <Route
+          path="/mentee/add"
+          element={<MenteeAdd />}
+        />
+        <Route
+          path="/mentee/:mentee_id/edit"
+          element={<MenteeEdit />}
+        />
+        <Route
+          path="/mentee/:mentee_id/log"
+          element={<MenteeLog />}
         />
         <Route
           path="*"

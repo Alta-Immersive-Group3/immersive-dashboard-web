@@ -2,7 +2,7 @@ import axios from 'axios';
 import { PostLogin, putUser } from './type';
 
 const instance = axios.create({
-  baseURL: `https://immersive-dashboard-api-7sngg27rcq-as.a.run.app/`,
+  baseURL: `https://virtserver.swaggerhub.com/iffakhry/alta-dashboard/1.0.0/`,
 });
 
 export default {
@@ -64,7 +64,7 @@ export default {
       },
     }),
 
-  // CLASS //
+  // classs
 
   getClassAll: (token?: string) =>
     instance({
@@ -104,71 +104,6 @@ export default {
     instance({
       method: 'DELETE',
       url: `classes/${usid}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }),
-
-  // Menteee //
-
-  getMenteeAll: (token?: string) =>
-    instance({
-      method: 'GET',
-      url: `mentees`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }),
-  postAddMentee: (token?: string, data?: any) =>
-    instance({
-      method: 'POST',
-      url: `mentees`,
-      data: data,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }),
-  getMenteeById: (token?: string, cid?: string) =>
-    instance({
-      method: 'GET',
-      url: `mentees/${cid}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }),
-  editMenteeById: (token?: string, usid?: string, data?: any) =>
-    instance({
-      method: 'PUT',
-      url: `mentees/${usid}`,
-      data: data,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }),
-  delMenteeById: (token?: string, usid?: any) =>
-    instance({
-      method: 'DELETE',
-      url: `mentees/${usid}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }),
-
-  //Feedback
-
-  postFeedback: (token?: string, data?: any) =>
-    instance({
-      method: 'POST',
-      url: `feedbacks`,
-      data: data,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }),
-  getFeedbackById: (token?: string, data?: any) =>
-    instance({
-      method: 'GET',
-      url: `mentees/${data}/feedback`,
       headers: {
         Authorization: `Bearer ${token}`,
       },

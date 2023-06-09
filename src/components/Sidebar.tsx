@@ -18,7 +18,7 @@ interface Props {
 }
 
 const Sidebar: FC<Props> = ({ children }) => {
-  const [, , removeCookie] = useCookies(['id', 'role', 'token']);
+  const [, , removeCookie] = useCookies(['id', 'role', 'token', 'full_name']);
   const navigate = useNavigate();
   const MySwal = withReactContent(swal);
 
@@ -31,6 +31,7 @@ const Sidebar: FC<Props> = ({ children }) => {
         removeCookie('id');
         removeCookie('role');
         removeCookie('token');
+        removeCookie('full_name');
         navigate('/login');
       }
     });
@@ -74,7 +75,7 @@ const Sidebar: FC<Props> = ({ children }) => {
                 </li>
                 <li>
                   <NavLink
-                    to={'/userlist'}
+                    to={'/users'}
                     className={({ isActive }) =>
                       isActive ? 'font-medium text-base-100' : ''
                     }
@@ -83,14 +84,19 @@ const Sidebar: FC<Props> = ({ children }) => {
                   </NavLink>
                 </li>
                 <li>
-                  <a>
+                  <NavLink
+                    to={'/mentee'}
+                    className={({ isActive }) =>
+                      isActive ? 'font-medium text-base-100' : ''
+                    }
+                  >
                     <FaUser />
                     Mentee
-                  </a>
+                  </NavLink>
                 </li>
                 <li>
                   <NavLink
-                    to={'/classlist'}
+                    to={'/classes'}
                     className={({ isActive }) =>
                       isActive ? 'font-medium text-base-100' : ''
                     }
