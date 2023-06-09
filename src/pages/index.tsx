@@ -4,6 +4,30 @@ import swal from '../utils/swal';
 import { Layout, Section } from '../components/Layout';
 import { useCookies } from 'react-cookie';
 import api from '../utils/api';
+        
+        import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
+import React, { useState, useEffect } from "react";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+        
+        
 
 const Homepage = () => {
   const [handleTime, setHandleTime] = useState<string>('');
@@ -14,6 +38,12 @@ const Homepage = () => {
   const ckName = cookie.full_name;
 
   const MySwal = withReactContent(swal);
+          
+          const [chartData, setChartData] = useState<any>({
+    datasets: [],
+  });
+
+  const [chartOptions, setChartOptions] = useState<any>({});
 
   const timeGreeting = () => {
     const currentDate = new Date();
@@ -50,10 +80,36 @@ const Homepage = () => {
   const dedicatedFetch = async () => {
     timeGreeting();
     await fetchProfile();
+    
   };
 
   useEffect(() => {
     dedicatedFetch();
+  }, []);
+          
+          
+  useEffect(() => {
+    setChartData({
+      labels: ["a", "b", "c", "d", "e"],
+      datasets: [
+        {
+          label: "Percentage",
+          data: [56, 90, 65, 88, 45],
+        },
+      ],
+    });
+    setChartOptions({
+      responsive: true,
+      plugins: {
+        legend: {
+          position: "top",
+        },
+        title: {
+          display: true,
+          text: "Penilaian",
+        },
+      },
+    });
   }, []);
 
   return (
@@ -76,10 +132,7 @@ const Homepage = () => {
         </div>
 
         <div className="w-full min-h-[83%] bg-base-300 rounded-xl flex flex-col gap-5 p-8 items-center">
-          <img
-            src="https://placehold.co/600x400/png?text=Placeholder+Dashboard"
-            alt="placeholder"
-          />
+          <Bar options={chartOptions} data={chartData} />
         </div>
       </Section>
     </Layout>
