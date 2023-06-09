@@ -4,8 +4,8 @@ import swal from '../utils/swal';
 import { Layout, Section } from '../components/Layout';
 import { useCookies } from 'react-cookie';
 import api from '../utils/api';
-        
-        import {
+
+import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
@@ -13,9 +13,8 @@ import api from '../utils/api';
   Title,
   Tooltip,
   Legend,
-} from "chart.js";
-import { Bar } from "react-chartjs-2";
-import React, { useState, useEffect } from "react";
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
@@ -26,9 +25,6 @@ ChartJS.register(
   Legend
 );
 
-        
-        
-
 const Homepage = () => {
   const [handleTime, setHandleTime] = useState<string>('');
   const [cookie, setCookie] = useCookies(['id', 'role', 'token', 'full_name']);
@@ -38,8 +34,8 @@ const Homepage = () => {
   const ckName = cookie.full_name;
 
   const MySwal = withReactContent(swal);
-          
-          const [chartData, setChartData] = useState<any>({
+
+  const [chartData, setChartData] = useState<any>({
     datasets: [],
   });
 
@@ -80,20 +76,18 @@ const Homepage = () => {
   const dedicatedFetch = async () => {
     timeGreeting();
     await fetchProfile();
-    
   };
 
   useEffect(() => {
     dedicatedFetch();
   }, []);
-          
-          
+
   useEffect(() => {
     setChartData({
-      labels: ["a", "b", "c", "d", "e"],
+      labels: ['a', 'b', 'c', 'd', 'e'],
       datasets: [
         {
-          label: "Percentage",
+          label: 'Percentage',
           data: [56, 90, 65, 88, 45],
         },
       ],
@@ -102,11 +96,11 @@ const Homepage = () => {
       responsive: true,
       plugins: {
         legend: {
-          position: "top",
+          position: 'top',
         },
         title: {
           display: true,
-          text: "Penilaian",
+          text: 'data  placeholder',
         },
       },
     });
@@ -131,8 +125,35 @@ const Homepage = () => {
           <p className="text-secondary tracking-wide text-xl">User {ckRole}</p>
         </div>
 
-        <div className="w-full min-h-[83%] bg-base-300 rounded-xl flex flex-col gap-5 p-8 items-center">
-          <Bar options={chartOptions} data={chartData} />
+        <div className="w-full min-h-[83%] bg-base-300 rounded-xl flex flex-col gap-8 p-8 items-center">
+          <div className="w-full flex gap-8 justify-center">
+            <div className="w-[40%]">
+              <Bar
+                options={chartOptions}
+                data={chartData}
+              />
+            </div>
+            <div className="w-[40%]">
+              <Bar
+                options={chartOptions}
+                data={chartData}
+              />
+            </div>
+          </div>
+          <div className="w-full flex gap-8 justify-center">
+            <div className="w-[40%]">
+              <Bar
+                options={chartOptions}
+                data={chartData}
+              />
+            </div>
+            <div className="w-[40%]">
+              <Bar
+                options={chartOptions}
+                data={chartData}
+              />
+            </div>
+          </div>
         </div>
       </Section>
     </Layout>
