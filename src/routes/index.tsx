@@ -4,7 +4,7 @@ import ScrollToTop from '../components/ScrollToTop';
 import NotFound from '../pages/NotFound';
 import Login from '../pages/Login';
 import Profile from '../pages/Profile';
-import Homepage from '../pages';
+import Homepage from '../pages/Dashboard';
 import Userlist from '../pages/Userlist';
 import Classlist from '../pages/Classlist';
 import Menteelist from '../pages/Menteelist';
